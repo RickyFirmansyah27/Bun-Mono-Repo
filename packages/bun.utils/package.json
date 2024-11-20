@@ -1,0 +1,17 @@
+{
+  "name": "@bun/utils",
+  "version": "1.0.0",
+  "private": true,
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist",
+    "clean": "rm -rf dist",
+    "dev": "bun run build -- --watch",
+    "lint": "tsc"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "typescript": "^5.0.0"
+  }
+}

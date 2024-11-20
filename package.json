@@ -1,5 +1,5 @@
 {
-  "name": "bun-repository",
+  "name": "bun-turborepo",
   "private": true,
   "scripts": {
     "build": "turbo build",
