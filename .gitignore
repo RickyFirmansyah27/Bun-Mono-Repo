@@ -1,6 +1,8 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-.yaml
+# Ignore Docker Compose files
+docker-compose.yml
+docker-compose.override.yml
 
 # Dependencies
 node_modules
