@@ -1,0 +1,31 @@
+{
+  "name": "koa-service",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "clean": "rm -rf dist",
+    "dev": "bun run --watch src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "check-types": "tsc --noEmit",
+    "start": "bun run dist/index.js"
+  },
+  "dependencies": {
+    "@bun/utils": "workspace:*",
+    "koa": "^2.15.3",
+    "koa-router": "^13.0.1",
+    "pg": "^8.11.3",
+    "redis": "^4.6.11"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.15.0",
+    "@types/koa-router": "^7.4.8",
+    "@types/pg": "^8.10.9",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "bun-types": "latest",
+    "eslint": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
+}
