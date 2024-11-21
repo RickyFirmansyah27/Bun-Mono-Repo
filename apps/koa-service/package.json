@@ -4,11 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "bun build ./src/index.ts --outdir ./dist --target node",
     "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
     "dev": "bun run --watch src/index.ts",
     "lint": "eslint . --ext .ts",
     "check-types": "tsc --noEmit",
+    "prestart": "npm run build",
     "start": "bun run dist/index.js"
   },
   "dependencies": {

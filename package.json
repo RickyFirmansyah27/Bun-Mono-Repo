@@ -5,7 +5,13 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start-elysia": "turbo run start --filter=elysia-service",
+    "start-express": "turbo run start --filter=express-service",
+    "start-fastify": "turbo run start --filter=fastify-service",
+    "start-hono": "turbo run start --filter=hono-service",
+    "start-koa": "turbo run start --filter=koa-service",
+    "start-sample": "turbo run start --filter=sample-service"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
