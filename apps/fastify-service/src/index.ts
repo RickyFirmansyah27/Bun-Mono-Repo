@@ -14,7 +14,10 @@ registerRoutes(fastify);
 // Start server
 const start = async () => {
   try {
-    await fastify.listen({ port: port });
+    await fastify.listen({ 
+      port: port, 
+      host: '0.0.0.0'
+    });
     Logger.info(`[Fastify-Service] Server is running on port ${port}`);
   } catch (error) {
     if (error instanceof Error) {
@@ -24,6 +27,7 @@ const start = async () => {
     } else {
       Logger.error(`Error starting server: ${String(error)}`);
     }
+    process.exit(1);
   }
 };
 
