@@ -1,9 +1,11 @@
 import Fastify from "fastify";
 import registerRoutes from "./routes";
 import { HttpLogger, Logger } from "./helper";
+import { PORT_SERVICE } from '@bun/utils';
 
 const fastify = Fastify();
-const port = 8004;
+const port = PORT_SERVICE.fastifyService;
+
 fastify.addHook('onRequest', HttpLogger);
 
 // Register all routes
