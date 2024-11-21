@@ -1,8 +1,9 @@
 import Fastify from "fastify";
 import registerRoutes from "./routes";
-import { HttpLogger } from "./helper";
+import { HttpLogger, Logger } from "./helper";
 
 const fastify = Fastify();
+const port = 8004;
 fastify.addHook('onRequest', HttpLogger);
 
 // Register all routes
@@ -11,11 +12,16 @@ registerRoutes(fastify);
 // Start server
 const start = async () => {
   try {
-    await fastify.listen({ port: 8004 });
-    console.log("[Fastify-Service] Server is running on port : 8004");
-  } catch (err) {
-    fastify.log.error(err);
-    process.exit(1);
+    await fastify.listen({ port: port });
+    Logger.info(`[Fastify-Service] Server is running on port ${port}`);
+  } catch (error) {
+    if (error instanceof Error) {
+      Logger.error(
+        `Error starting server: Message: ${error.message} | Stack: ${error.stack}`
+      );
+    } else {
+      Logger.error(`Error starting server: ${String(error)}`);
+    }
   }
 };
 
