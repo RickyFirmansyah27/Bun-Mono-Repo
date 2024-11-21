@@ -19,17 +19,15 @@ const users: User[] = [
 
 import { Context } from 'koa';
 
+const contextLogger = 'UserController';
 export const getUser = (ctx: Context) => {
-  ctx.body = {
-    data: users,
-  };
+
+  Logger.info(`${contextLogger} | getUser`, users);
+  return BaseResponse(ctx, 'User fecthed successfully', 'success', { users: users })
 };
 
 export const getUserById = (ctx: Context) => {
   const { userId } = ctx.params;
   const data = users.find((user) => user.id === Number(userId));
-  ctx.body = {
-    data,
-    userId,
-  };
+  return BaseResponse(ctx, 'User fecthed successfully', 'success', { users: data })
 };

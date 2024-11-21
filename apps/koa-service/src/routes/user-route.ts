@@ -1,10 +1,11 @@
 import Router from 'koa-router';
 import { getUser, getUserById } from '../controller/user-controller';
 
+const basePath = '/user';
 const userRouter = new Router();
 
-userRouter.get('/user', getUser);
+userRouter.get(`${basePath}`, getUser);
 
-userRouter.get('/user/:userId', getUserById);
+userRouter.get(`${basePath}/:userId`, getUserById);
 
 export default userRouter;
