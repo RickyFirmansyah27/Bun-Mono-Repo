@@ -1,7 +1,9 @@
 import Fastify from "fastify";
 import registerRoutes from "./routes";
+import { HttpLogger } from "./helper";
 
-const fastify = Fastify({ logger: true });
+const fastify = Fastify();
+fastify.addHook('onRequest', HttpLogger);
 
 // Register all routes
 registerRoutes(fastify);
