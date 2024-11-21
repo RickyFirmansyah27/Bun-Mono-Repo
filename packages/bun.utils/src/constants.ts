@@ -4,7 +4,8 @@ export const PORT_SERVICE = {
   expressService: 8001,
   honoService: 8002,
   elysiaService: 8003,
-  fastifyService: 8004
+  fastifyService: 8004,
+  koaService: 8005
   // add more
 };
 
