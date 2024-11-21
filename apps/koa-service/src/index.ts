@@ -1,11 +1,12 @@
 import Koa from 'koa';
 import routes from './routes';
 import { PORT_SERVICE } from '@bun/utils';
-import { Logger } from './helper';
+import { HttpLogger, Logger } from './helper';
 
 const app = new Koa();
 const port = PORT_SERVICE.koaService;
 
+app.use(HttpLogger)
 app.use(routes.routes()).use(routes.allowedMethods());
 
 app.listen(port, async (): Promise<void> => {
