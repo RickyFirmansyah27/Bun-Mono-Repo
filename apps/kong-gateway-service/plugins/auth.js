@@ -24,7 +24,9 @@ class AuthPlugin {
             kong.log.info("Auth Headers:", JSON.stringify({ requestHeaders }));
             if (!isEmpty(requestHeaders.authorization)) {
                 const token = requestHeaders.authorization[0].split(" ")[1];
-                const decoded = jwt.verify(token, this.config.SECRET, {
+                // todo is auth service build
+                // const decoded = jwt.verify(token, this.config.SECRET, {
+                const decoded = jwt.decode(token, this.config.SECRET, {
                     algorithms: ["HS256"],
                     ignoreExpiration: false,
                     issuer: this.config.ISSUER,
@@ -61,19 +63,19 @@ module.exports = {
         {
             SECRET: {
                 type: "string",
-                default: process.env.SECRET,
+                default: process.env.SECRET || 'qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u',
             },
         },
         {
             ISSUER: {
                 type: "string",
-                default: process.env.ISSUER,
+                default: process.env.ISSUER || 'bun-service',
             },
         },
         {
             AUDIENCE: {
                 type: "string",
-                default: process.env.AUDIENCE,
+                default: process.env.AUDIENCE || 'bun-client',
             },
         },
     ],
