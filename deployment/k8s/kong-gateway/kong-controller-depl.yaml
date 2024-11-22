@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kong-controller-bun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kong-controller-bun
+  template:
+    metadata:
+      labels:
+        app: kong-controller-bun
+    spec:
+      containers:
+        - name: kong-controller-bun
+          image: ghcr.io/data-repository/kong-bun-service:latest
+          ports:
+            - containerPort: 8000
+          env:
+            - name: KONG_DATABASE
+              value: "off"
+            - name: KONG_DECLARATIVE_CONFIG
+              value: /etc/kong/declarative/kong.yml
+            - name: KONG_ADMIN_ACCESS_LOG
+              value: /dev/stdout
+            - name: KONG_ADMIN_ERROR_LOG
+              value: /dev/stderr
+            - name: KONG_PROXY_ACCESS_LOG
+              value: /dev/stdout
+            - name: KONG_PROXY_ERROR_LOG
+              value: /dev/stderr
+            - name: KONG_PLUGINSERVER_NAMES
+              value: js
+            - name: KONG_PLUGINSERVER_JS_SOCKET
+              value: /usr/local/kong/js_pluginserver.sock
+            - name: KONG_PLUGINSERVER_JS_START_CMD
+              value: /usr/local/bin/kong-js-pluginserver -v --plugins-directory /usr/local/kong/js-plugins
+            - name: KONG_PLUGINSERVER_JS_QUERY_CMD
+              value: /usr/local/bin/kong-js-pluginserver --plugins-directory /usr/local/kong/js-plugins --dump-all-plugins
+            - name: KONG_LOG_LEVEL
+              value: debug
+            - name: SECRET
+              value: "qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u"
+            - name: ISSUER
+              value: "bun-service"
+            - name: AUDIENCE
+              value: "bun-client"
+            # Allow plugins to be used. The plugin name is your JS file name e.g. hello.js
+            - name: KONG_PLUGINS
+              value: bundled,auth
+            - name: KONG_RESPONSE_TRANSFORMER_REMOVE_HEADERS
+              value: "false"
+          volumeMounts:
+            - name: kong-config-volume
+              mountPath: /etc/kong/declarative
+              readOnly: true
+      imagePullSecrets:
+        - name: ghcr-secret
+      volumes:
+        - name: kong-config-volume
+          configMap:
+            name: kong-config-bun
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kong-service-bun
+spec:
+  ports:
+    - port: 8000
+      targetPort: 8000
+      protocol: TCP
+  selector:
+    app: kong-controller-bun

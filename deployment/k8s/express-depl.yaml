@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bun-data-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bun-data-api
+  template:
+    metadata:
+      labels:
+        app: bun-data-api
+    spec:
+      containers:
+        - name: bun-data-api
+          image: ghcr.io/coder-repository/data-service:20240321143959
+          env:
+            - name: JWT_SECRET
+              value: "c70012035ab511e9c577c63366878648546aa5361537063306161537177330ad"
+            - name: PORT
+              value: "5009"
+            - name: DB_HOST
+              value: ep-raspy-glitter-a1fuh4un-pooler.ap-southeast-1.aws.neon.tech
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USER
+              value: oktariorifqi
+            - name: DB_PASSWORD
+              value: WbVHOqg0m6Gw
+            - name: DB_NAME
+              value: coder-siakad
+            - name: DB_SSL
+              value: "true"
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bun-data-api
+spec:
+  selector:
+    app: bun-data-api
+  ports:
+    - port: 5009
+      targetPort: 5009
+

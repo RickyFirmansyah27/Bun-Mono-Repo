@@ -1,0 +1,36 @@
+_format_version: "2.1"
+_transform: true
+
+plugins:
+  - name: cors
+    config:
+      origins:
+        - "*"
+      methods:
+        - GET
+        - POST
+        - PUT
+        - PATCH
+        - DELETE
+        - OPTIONS
+
+services:
+  - name: example-service
+    url: https://mockbin.org
+    routes:
+      - name: public-route
+        paths:
+          - /api
+        plugins:
+          - name: auth
+
+  - name: express-service
+    url: http://express-service:8001
+    plugins:
+      - name: auth
+    routes:
+      - name: express-route
+        paths:
+          - /api/express
+        strip_path: false
+        preserve_host: false
