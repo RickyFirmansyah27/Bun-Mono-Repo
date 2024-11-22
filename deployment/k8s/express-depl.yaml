@@ -14,22 +14,22 @@ spec:
     spec:
       containers:
         - name: bun-data-api
-          image: ghcr.io/coder-repository/data-service:20240321143959
+          image: ghcr.io/data-repository/kong-bun-service:latest
           env:
             - name: JWT_SECRET
               value: "c70012035ab511e9c577c63366878648546aa5361537063306161537177330ad"
             - name: PORT
-              value: "5009"
+              value: "8001"
             - name: DB_HOST
               value: ep-raspy-glitter-a1fuh4un-pooler.ap-southeast-1.aws.neon.tech
             - name: DB_PORT
               value: "5432"
             - name: DB_USER
-              value: oktariorifqi
+              value: postgres
             - name: DB_PASSWORD
-              value: WbVHOqg0m6Gw
+              value: postgres
             - name: DB_NAME
-              value: coder-siakad
+              value: myapp
             - name: DB_SSL
               value: "true"
       imagePullSecrets:
@@ -43,6 +43,6 @@ spec:
   selector:
     app: bun-data-api
   ports:
-    - port: 5009
-      targetPort: 5009
+    - port: 8001
+      targetPort: 8001
 
