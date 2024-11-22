@@ -17,7 +17,7 @@ spec:
           image: ghcr.io/data-repository/kong-bun-service:latest
           env:
             - name: JWT_SECRET
-              value: "c70012035ab511e9c577c63366878648546aa5361537063306161537177330ad"
+              value: "qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u"
             - name: PORT
               value: "8001"
             - name: DB_HOST
