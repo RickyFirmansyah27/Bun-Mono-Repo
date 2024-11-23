@@ -13,7 +13,6 @@
     "start": "bun run dist/index.js"
   },
   "dependencies": {
-    "@bun/utils": "workspace:*",
     "@logtail/browser": "^0.5.2",
     "@logtail/node": "^0.5.2",
     "@logtail/winston": "^0.5.2",

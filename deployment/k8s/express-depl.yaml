@@ -21,7 +21,7 @@ spec:
             - name: PORT
               value: "8001"
             - name: DB_HOST
-              value: ep-raspy-glitter-a1fuh4un-pooler.ap-southeast-1.aws.neon.tech
+              value: db.ewpvmtfpdvvldyrhksic.supabase.co
             - name: DB_PORT
               value: "5432"
             - name: DB_USER
