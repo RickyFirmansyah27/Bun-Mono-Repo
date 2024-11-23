@@ -8,7 +8,6 @@ interface User {
     email: string;
 }
 
-// Sample in-memory users array to store users
 const users: User[] = [];
 
 export class UserController {
