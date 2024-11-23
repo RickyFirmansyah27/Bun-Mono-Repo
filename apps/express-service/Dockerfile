@@ -16,6 +16,8 @@ FROM oven/bun:1-slim AS runner
 WORKDIR /app
 
 # Copy production files
+COPY --from=builder /app/packages/bun.utils/dist ./packages/bun.utils/dist
+COPY --from=builder /app/packages/bun.utils/package.json ./packages/bun.utils/
 COPY --from=builder /app/apps/express-service/dist ./apps/express-service/dist
 COPY --from=builder /app/apps/express-service/package.json ./apps/express-service/
 
