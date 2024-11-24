@@ -12,16 +12,16 @@ RUN bun add --upgrade
 RUN bun install
 
 # Build aplikasi
-RUN cd apps/koa-service && bun run build
+RUN cd apps/auth-service && bun run build
 
 # Stage 2: Runner (Production)
 FROM oven/bun:1-slim AS runner
 WORKDIR /app
 
 # Copy hanya file yang diperlukan untuk production
-COPY --from=builder /app/apps/koa-service/dist ./apps/koa-service/dist
+COPY --from=builder /app/apps/auth-service/dist ./apps/auth-service/dist
 
 # Set up environment dan jalankan aplikasi
-ENV PORT=8002
-EXPOSE 8002
-CMD ["bun", "apps/koa-service/dist/index.js"]
+ENV PORT=8000
+EXPOSE 8000
+CMD ["bun", "apps/auth-service/dist/index.js"]
