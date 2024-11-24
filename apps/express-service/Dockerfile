@@ -5,14 +5,14 @@ FROM oven/bun:latest AS base
 FROM base AS builder
 WORKDIR /app
 
+# Instal Turbo CLI secara global
+RUN bun add -g turbo
+
 # Salin semua file ke dalam container
 COPY . .
 
-# Instal dependensi menggunakan Bun
-RUN bun install
-
-# Build proyek dengan Turbo
-RUN npx turbo prune --scope=express-service --docker
+# Jalankan turbo prune untuk membuat workspace yang terisolasi
+RUN turbo prune --scope=express-service --docker
 
 # Tahap installer: Menyiapkan aplikasi dengan dependensi lengkap
 FROM base AS installer
@@ -45,4 +45,4 @@ USER expressjs
 COPY --from=installer /app .
 
 # Jalankan aplikasi
-CMD bun apps/express-service/dist/index.js
+CMD ["bun", "apps/express-service/dist/index.js"]
