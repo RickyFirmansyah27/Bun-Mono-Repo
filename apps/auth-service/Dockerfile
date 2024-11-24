@@ -22,6 +22,6 @@ WORKDIR /app
 COPY --from=builder /app/apps/auth-service/dist ./apps/auth-service/dist
 
 # Set up environment dan jalankan aplikasi
-ENV PORT=8000
-EXPOSE 8000
+ENV PORT=8100
+EXPOSE 8100
 CMD ["bun", "apps/auth-service/dist/index.js"]

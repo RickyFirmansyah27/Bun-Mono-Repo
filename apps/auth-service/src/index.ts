@@ -98,9 +98,6 @@ app.after((ctx) => {
   return ctx;
 });
 
-const verifyToken = (token: string) => {
-  return jwt.verify(token, secret);
-};
 const port = PORT_SERVICE.authService;
 
 const server = app.listen({ port });
