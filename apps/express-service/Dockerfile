@@ -1,18 +1,18 @@
 # Base image dengan Bun dari Oven
 FROM oven/bun:latest AS base
 
-# Tahap builder: Menyiapkan proyek dan dependensi
+# Tahap builder: Menggunakan Bun untuk menjalankan Turbo
 FROM base AS builder
 WORKDIR /app
 
-# Instal Turbo CLI secara global
+# Instal Turbo secara global menggunakan Bun
 RUN bun add -g turbo
 
 # Salin semua file ke dalam container
 COPY . .
 
 # Jalankan turbo prune untuk membuat workspace yang terisolasi
-RUN turbo prune --scope=express-service --docker
+RUN bun run src/index.ts
 
 # Tahap installer: Menyiapkan aplikasi dengan dependensi lengkap
 FROM base AS installer
@@ -22,14 +22,14 @@ WORKDIR /app
 COPY --from=builder /app/out/json/ .
 COPY --from=builder /app/out/package-lock.json ./package-lock.json
 
-# Instal dependensi untuk subproyek yang terisolasi
+# Instal dependensi menggunakan Bun
 RUN bun install
 
 # Salin kode aplikasi penuh dan file Turbo
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
-# Bangun proyek menggunakan Turbo
+# Bangun proyek menggunakan Bun
 RUN bun turbo build --filter=express-service...
 
 # Tahap runner: Menyiapkan aplikasi untuk dijalankan
