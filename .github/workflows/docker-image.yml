@@ -37,4 +37,4 @@ jobs:
           context: .
           file: ./apps/express-service/Dockerfile
           push: true
-          tags: ghcr.io/data-repository/express-service:${{ steps.version.outputs.date }}
+          tags: ghcr.io/RickyFirmansyah27/express-service:${{ steps.version.outputs.date }}
