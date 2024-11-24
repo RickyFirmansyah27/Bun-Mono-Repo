@@ -16,7 +16,7 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
         Logger.info(`${contextLogger} | getUser`, users);
         return BaseResponse(res, 'Users retrieved successfully', 'success', { data: users });
     } catch (error) {
-        res.boom.internal('Internal Server Error');
+        return BaseResponse(res, 'error', 'internalServerError', null);
     }
 };
 
