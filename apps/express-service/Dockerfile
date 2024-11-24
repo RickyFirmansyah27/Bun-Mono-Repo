@@ -1,25 +1,48 @@
-# Stage 1: Builder
-FROM oven/bun:1 AS builder
+# Base image dengan Bun dari Oven
+FROM oven/bun:latest AS base
+
+# Tahap builder: Menyiapkan proyek dan dependensi
+FROM base AS builder
 WORKDIR /app
 
-# Copy seluruh proyek termasuk packages
+# Salin semua file ke dalam container
 COPY . .
 
-# Install dependencies
+# Instal dependensi menggunakan Bun
 RUN bun install
 
-# Build aplikasi
-RUN cd apps/express-service && bun run build
+# Build proyek dengan Turbo
+RUN npx turbo prune --scope=express-service --docker
 
-# Stage 2: Runner (Production)
-FROM oven/bun:1-slim AS runner
+# Tahap installer: Menyiapkan aplikasi dengan dependensi lengkap
+FROM base AS installer
 WORKDIR /app
 
+# Salin hasil prune dari builder
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/package-lock.json ./package-lock.json
 
-COPY --from=builder /app/apps/express-service/dist ./apps/express-service/dist
-COPY --from=builder /app/apps/express-service/package.json ./apps/express-service/
+# Instal dependensi untuk subproyek yang terisolasi
+RUN bun install
 
-# Set up environment
-ENV PORT=8001
-EXPOSE 8001
-CMD ["bun", "apps/express-service/dist/index.js"]
+# Salin kode aplikasi penuh dan file Turbo
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+
+# Bangun proyek menggunakan Turbo
+RUN bun turbo build --filter=express-service...
+
+# Tahap runner: Menyiapkan aplikasi untuk dijalankan
+FROM base AS runner
+WORKDIR /app
+
+# Tambahkan pengguna non-root untuk keamanan
+RUN addgroup --system --gid 1001 expressjs
+RUN adduser --system --uid 1001 expressjs
+USER expressjs
+
+# Salin hasil build dari installer
+COPY --from=installer /app .
+
+# Jalankan aplikasi
+CMD bun apps/express-service/dist/index.js
