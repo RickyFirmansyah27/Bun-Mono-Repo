@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 export const PORT_SERVICE = {
-  authService: 8000,
+  authService: 8100,
   expressService: 8001,
   honoService: 8002,
   elysiaService: 8003,
   fastifyService: 8004,
-  koaService: 8005
+  koaService: 8005,
   // add more
 };
 
@@ -19,6 +19,6 @@ export const resMessage = {
   forbidden: 'Cannot access this API',
   created: 'Successfully created data',
   updated: 'Successfully updated data',
-  deleted: 'Successfully deleted data'
+  deleted: 'Successfully deleted data',
   // add more
 };
