@@ -1,48 +1,26 @@
-# Base image dengan Bun dari Oven
-FROM oven/bun:latest AS base
-
-# Tahap builder: Menggunakan Bun untuk menjalankan Turbo
-FROM base AS builder
+# Stage 1: Builder
+FROM oven/bun:1 AS builder
 WORKDIR /app
 
-# Instal Turbo secara global menggunakan Bun
-RUN bun add -g turbo
-
-# Salin semua file ke dalam container
+# Copy seluruh proyek termasuk packages
 COPY . .
 
-# Jalankan turbo prune untuk membuat workspace yang terisolasi
-RUN bun run src/index.ts
-
-# Tahap installer: Menyiapkan aplikasi dengan dependensi lengkap
-FROM base AS installer
-WORKDIR /app
-
-# Salin hasil prune dari builder
-COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/package-lock.json ./package-lock.json
-
-# Instal dependensi menggunakan Bun
+# Install dependencies
 RUN bun install
 
-# Salin kode aplikasi penuh dan file Turbo
-COPY --from=builder /app/out/full/ .
-COPY turbo.json turbo.json
+# Build aplikasi
+RUN cd apps/express-service && bun run build
 
-# Bangun proyek menggunakan Bun
-RUN bun turbo build --filter=express-service...
-
-# Tahap runner: Menyiapkan aplikasi untuk dijalankan
-FROM base AS runner
+# Stage 2: Runner (Production)
+FROM oven/bun:1-slim AS runner
 WORKDIR /app
 
-# Tambahkan pengguna non-root untuk keamanan
-RUN addgroup --system --gid 1001 expressjs
-RUN adduser --system --uid 1001 expressjs
-USER expressjs
+# Copy production files
 
-# Salin hasil build dari installer
-COPY --from=installer /app .
+COPY --from=builder /app/apps/express-service/dist ./apps/express-service/dist
+COPY --from=builder /app/apps/express-service/package.json ./apps/express-service/
 
-# Jalankan aplikasi
+# Set up environment
+ENV PORT=8001
+EXPOSE 8001
 CMD ["bun", "apps/express-service/dist/index.js"]
