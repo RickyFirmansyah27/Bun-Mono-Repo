@@ -22,6 +22,6 @@ COPY --from=builder /app/apps/koa-service/dist ./apps/koa-service/dist
 COPY --from=builder /app/apps/koa-service/package.json ./apps/koa-service/
 
 # Set up environment
-ENV PORT=8001
-EXPOSE 8001
+ENV PORT=8005
+EXPOSE 8005
 CMD ["bun", "apps/koa-service/dist/index.js"]

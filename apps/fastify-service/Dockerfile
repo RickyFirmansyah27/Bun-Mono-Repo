@@ -22,6 +22,6 @@ COPY --from=builder /app/apps/fastify-service/dist ./apps/fastify-service/dist
 COPY --from=builder /app/apps/fastify-service/package.json ./apps/fastify-service/
 
 # Set up environment
-ENV PORT=8001
-EXPOSE 8001
+ENV PORT=8004
+EXPOSE 8004
 CMD ["bun", "apps/fastify-service/dist/index.js"]

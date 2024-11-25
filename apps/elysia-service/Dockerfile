@@ -22,6 +22,6 @@ COPY --from=builder /app/apps/elysia-service/dist ./apps/elysia-service/dist
 COPY --from=builder /app/apps/elysia-service/package.json ./apps/elysia-service/
 
 # Set up environment
-ENV PORT=8001
-EXPOSE 8001
+ENV PORT=8003
+EXPOSE 8003
 CMD ["bun", "apps/elysia-service/dist/index.js"]

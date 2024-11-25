@@ -22,6 +22,6 @@ COPY --from=builder /app/apps/hono-service/dist ./apps/hono-service/dist
 COPY --from=builder /app/apps/hono-service/package.json ./apps/hono-service/
 
 # Set up environment
-ENV PORT=8001
-EXPOSE 8001
+ENV PORT=8002
+EXPOSE 8002
 CMD ["bun", "apps/hono-service/dist/index.js"]

@@ -12,7 +12,6 @@ const app: Express = express();
 const port = PORT_SERVICE.expressService;
 
 // Middleware
-app.use(boom);
 app.use(HttpLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
