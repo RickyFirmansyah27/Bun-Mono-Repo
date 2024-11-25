@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bun-data-api
-          image: ghcr.io/rickyfirmansyah27/express-service:20241125024420
+          image: ghcr.io/rickyfirmansyah27/express-service:20241125041846
           env:
             - name: JWT_SECRET
               value: "qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u"
