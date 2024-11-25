@@ -19,7 +19,9 @@
     "@logtail/winston": "^0.5.2",
     "express": "^4.18.2",
     "pg": "^8.11.3",
-    "redis": "^4.6.11"
+    "redis": "^4.6.11",
+    "moment": "^2.30.1",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
