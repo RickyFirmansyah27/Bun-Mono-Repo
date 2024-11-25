@@ -1,9 +1,17 @@
-import Router from 'koa-router';
-import userRoute from './user-route';
+import { Bao } from 'baojs';
+import ctl from '../controller';
+import middleware from '../middleware';
 
-const basePath = '/api/koa';
-const router = new Router({ prefix: basePath });
+const basePath = '/api/auth';
 
-router.use(userRoute.routes());
+const initializeRoutes = (app: Bao) => {
+  app.before(middleware.requestMiddleware);
+  app.get(basePath, ctl.indexController);
+  app.post(`${basePath}/register`, ctl.registerController);
+  app.post(`${basePath}/login`, ctl.loginController);
+  app.get(`${basePath}/refresh-token`, ctl.indexController);
+  app.get(`${basePath}/protected`, ctl.protectedController);
+  app.after(middleware.afterMiddleware);
+};
 
-export default router;
+export default initializeRoutes;
