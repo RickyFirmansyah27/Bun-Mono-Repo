@@ -9,10 +9,10 @@ import { PORT_SERVICE } from '@bun/utils';
 import { routes } from './routes';
 
 const app: Express = express();
-const port = 8001;
+const port = PORT_SERVICE.expressService;
 
 // Middleware
-app.use(boom());
+app.use(boom);
 app.use(HttpLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
