@@ -16,7 +16,7 @@ app.use(HttpLogger);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 routes.forEach(route => {
-    app.use(route.path, route.router);
+    app.use(route.path, route.handler);
 });
 
 app.listen(port, async (): Promise<void> => {
