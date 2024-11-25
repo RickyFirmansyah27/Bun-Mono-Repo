@@ -15,7 +15,7 @@ export const checkHealth = async (req: Request, res: Response): Promise<void> =>
     const contextLogger = 'HealthController';
     try {
         Logger.info(`${contextLogger} | checkHealth`, health);
-        return BaseResponse(res, 'Users retrieved successfully', 'success', health);
+        return BaseResponse(res, 'Health checked successfully', 'success', health);
     } catch (error) {
         return BaseResponse(res, 'error', 'internalServerError', null);
     }
