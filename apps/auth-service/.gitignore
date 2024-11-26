@@ -3,7 +3,7 @@
 # Logs
 
 #env
-.env
+*.env
 
 logs
 _.log
