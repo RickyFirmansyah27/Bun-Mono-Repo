@@ -11,6 +11,9 @@ node_modules
 .pnp.js
 
 # Local env files
+auth-service/auth-service.env
+kong-gateway-service/kong.env
+
 .env
 .env.local
 .env.development.local
