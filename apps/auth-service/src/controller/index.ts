@@ -42,7 +42,7 @@ const loginController: IHandler = async (ctx: Context) => {
   try {
     const body = (await ctx.req.json()) as any;
     if (!body.username) {
-      throw new Error('username is required');
+      return BaseResponse(ctx, 'username is required', 'badRequest', null);
     }
     // todo env
     const token = jwt.sign(
