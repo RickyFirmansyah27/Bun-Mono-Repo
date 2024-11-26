@@ -14,12 +14,12 @@ spec:
     spec:
       containers:
         - name: bun-data-api
-          image: ghcr.io/rickyfirmansyah27/express-service:20241125062002
+          image: ghcr.io/rickyfirmansyah27/auth-service:20241126134226
           env:
             - name: JWT_SECRET
               value: "qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u"
             - name: PORT
-              value: "8001"
+              value: "8100"
             - name: DB_HOST
               value: db.ewpvmtfpdvvldyrhksic.supabase.co
             - name: DB_PORT
@@ -50,6 +50,6 @@ spec:
   selector:
     app: bun-data-api
   ports:
-    - port: 8001
-      targetPort: 8001
+    - port: 8100
+      targetPort: 8100
 
