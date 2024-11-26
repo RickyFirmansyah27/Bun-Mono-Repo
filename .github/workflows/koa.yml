@@ -29,12 +29,13 @@ jobs:
 
       - name: Determine the next version
         id: version
-        run: echo "::set-output name=date::$(date +'%Y%m%d%H%M%S')"
+        run: |
+          echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
       - name: Build and push image
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v4
         with:
           context: .
           file: ./apps/koa-service/Dockerfile
           push: true
-          tags: ghcr.io/rickyfirmansyah27/koa-service:${{ steps.version.outputs.date }}
+          tags: ghcr.io/rickyfirmansyah27/koa-service:${{ env.date }}
