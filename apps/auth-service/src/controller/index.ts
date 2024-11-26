@@ -56,9 +56,6 @@ const loginController: IHandler = async (ctx: Context) => {
     );    
     return BaseResponse(ctx, 'Login success', 'success', { token });
   } catch (error: unknown) {
-    if (error instanceof Error) {
-      return BaseResponse(ctx, error.message, 'badRequest', error);
-    }
     return BaseResponse(
       ctx,
       'Internal Server Error',
