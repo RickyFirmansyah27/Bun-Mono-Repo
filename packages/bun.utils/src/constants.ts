@@ -22,3 +22,12 @@ export const resMessage = {
   deleted: 'Successfully deleted data',
   // add more
 };
+
+// db environment
+export const DB_CONFIG = {
+  host: 'localhost',
+  user: 'root',
+  password: 'secret',
+  port: 6379,
+  database: 'bun',
+};
