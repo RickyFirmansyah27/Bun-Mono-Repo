@@ -2,8 +2,10 @@ import { IHandler, Context } from 'baojs';
 import { BaseResponse } from '../helper';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import { config } from 'dotenv';
+config({ path: './auth-service.env' });
 
-const secret = 'qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u';
+const secret = process.env.JWT_SECRET;
 
 const indexController: IHandler = (ctx: Context) => {
   return BaseResponse(ctx, 'Auth service', 'success', {
@@ -49,13 +51,17 @@ const loginController: IHandler = async (ctx: Context) => {
       { username: body.username },
       secret,
       {
-        expiresIn: '1h',
-        issuer: 'bun-service',
-        audience: 'bun-client',
+        expiresIn: process.env.JWT_EXPIRED,
+        issuer: process.env.JWT_ISSUER,
+        audience: process.env.JWT_CLIENT,
       }
-    );    
+    );
+    console.log(token);
     return BaseResponse(ctx, 'Login success', 'success', { token });
   } catch (error: unknown) {
+    if (error instanceof Error) {
+      return BaseResponse(ctx, error.message, 'badRequest', error);
+    }
     return BaseResponse(
       ctx,
       'Internal Server Error',
