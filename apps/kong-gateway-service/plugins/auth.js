@@ -2,6 +2,9 @@
 
 const jwt = require("jsonwebtoken");
 const { isEmpty } = require("lodash");
+const { config } = require('dotenv');
+config({ path: '../kong.env' });
+
 
 const BaseResponse = {
     ErrorResponse: (kong, httpStatus, message) => {
@@ -61,19 +64,19 @@ module.exports = {
         {
             SECRET: {
                 type: "string",
-                default: process.env.SECRET || 'qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u',
+                default: process.env.SECRET,
             },
         },
         {
             ISSUER: {
                 type: "string",
-                default: process.env.ISSUER || 'bun-service',
+                default: process.env.ISSUER,
             },
         },
         {
             AUDIENCE: {
                 type: "string",
-                default: process.env.AUDIENCE || 'bun-client',
+                default: process.env.AUDIENCE,
             },
         },
     ],
