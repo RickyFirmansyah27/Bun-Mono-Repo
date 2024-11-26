@@ -12,7 +12,8 @@
     "start-fastify": "turbo run start --filter=fastify-service",
     "start-hono": "turbo run start --filter=hono-service",
     "start-koa": "turbo run start --filter=koa-service",
-    "start-sample": "turbo run start --filter=sample-service"
+    "start-sample": "turbo run start --filter=sample-service",
+    "start-metrics": "turbo run start --filter=metrics-service"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

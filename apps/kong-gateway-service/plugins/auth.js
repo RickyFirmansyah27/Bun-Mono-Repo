@@ -24,9 +24,7 @@ class AuthPlugin {
             kong.log.info("Auth Headers:", JSON.stringify({ requestHeaders }));
             if (!isEmpty(requestHeaders.authorization)) {
                 const token = requestHeaders.authorization[0].split(" ")[1];
-                // todo is auth service build
-                // const decoded = jwt.verify(token, this.config.SECRET, {
-                const decoded = jwt.decode(token, this.config.SECRET, {
+                const decoded = jwt.verify(token, this.config.SECRET, {
                     algorithms: ["HS256"],
                     ignoreExpiration: false,
                     issuer: this.config.ISSUER,

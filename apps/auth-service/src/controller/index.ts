@@ -44,9 +44,16 @@ const loginController: IHandler = async (ctx: Context) => {
     if (!body.username) {
       throw new Error('username is required');
     }
-    const token = jwt.sign({ username: body.username }, secret, {
-      expiresIn: '1h',
-    });
+    // todo env
+    const token = jwt.sign(
+      { username: body.username },
+      secret,
+      {
+        expiresIn: '1h',
+        issuer: 'bun-service',
+        audience: 'bun-client',
+      }
+    );    
     return BaseResponse(ctx, 'Login success', 'success', { token });
   } catch (error: unknown) {
     if (error instanceof Error) {
