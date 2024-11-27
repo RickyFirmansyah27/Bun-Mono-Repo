@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bun-koa-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bun-koa-api
+  template:
+    metadata:
+      labels:
+        app: bun-koa-api
+    spec:
+      containers:
+        - name: bun-koa-api
+          image: ghcr.io/rickyfirmansyah27/koa-service:20241127063701
+          env:
+            - name: JWT_SECRET
+              value: 'qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u'
+            - name: PORT
+              value: '8005'
+            - name: DB_HOST
+              value: db.ewpvmtfpdvvldyrhksic.supabase.co
+            - name: DB_PORT
+              value: '5432'
+            - name: DB_USER
+              value: postgres
+            - name: DB_PASSWORD
+              value: postgres
+            - name: DB_NAME
+              value: myapp
+            - name: DB_SSL
+              value: 'true'
+            - name: LOGTAIL_API_KEY
+              value: 'qLeeazh2QzV47U2f7EnoMhT8'
+          resources:
+            requests:
+              memory: '512Mi'
+              cpu: '500m'
+            limits:
+              memory: '1Gi'
+              cpu: '1'
+      imagePullSecrets:
+        - name: ghcr-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bun-koa-api
+spec:
+  selector:
+    app: bun-koa-api
+  ports:
+    - port: 8005
+      targetPort: 8005
