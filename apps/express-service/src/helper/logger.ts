@@ -4,7 +4,7 @@ import { Logtail } from "@logtail/node";
 import { LogtailTransport } from "@logtail/winston";
 
 // Inisialisasi Logtail dengan API key
-const logtail = new Logtail("BTYawmJrpt9cF84Wrzi9PQqR");
+const logtail = new Logtail("qLeeazh2QzV47U2f7EnoMhT8");
 
 const { combine, timestamp, printf, colorize } = format;
 

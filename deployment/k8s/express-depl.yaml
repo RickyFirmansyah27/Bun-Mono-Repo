@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-data-api
+  name: bun-express-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-data-api
+      app: bun-express-api
   template:
     metadata:
       labels:
-        app: bun-data-api
+        app: bun-express-api
     spec:
       containers:
-        - name: bun-data-api
+        - name: bun-express-api
           image: ghcr.io/rickyfirmansyah27/express-service:20241125062002
           env:
             - name: JWT_SECRET
@@ -32,6 +32,8 @@ spec:
               value: myapp
             - name: DB_SSL
               value: "true"
+            - name: LOGTAIL_API_KEY
+              value: "qLeeazh2QzV47U2f7EnoMhT8"
           resources:
             requests:
               memory: "512Mi"
@@ -45,10 +47,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-data-api
+  name: bun-express-api
 spec:
   selector:
-    app: bun-data-api
+    app: bun-express-api
   ports:
     - port: 8001
       targetPort: 8001

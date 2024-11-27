@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-data-api
+  name: bun-auth-api
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-data-api
+      app: bun-auth-api
   template:
     metadata:
       labels:
-        app: bun-data-api
+        app: bun-auth-api
     spec:
       containers:
-        - name: bun-data-api
+        - name: bun-auth-api
           image: ghcr.io/rickyfirmansyah27/auth-service:20241126134226
           env:
             - name: JWT_SECRET
@@ -32,6 +32,8 @@ spec:
               value: myapp
             - name: DB_SSL
               value: "true"
+            - name: LOGTAIL_API_KEY
+              value: "qLeeazh2QzV47U2f7EnoMhT8"
           resources:
             requests:
               memory: "512Mi"
@@ -45,10 +47,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-data-api
+  name: bun-auth-api
 spec:
   selector:
-    app: bun-data-api
+    app: bun-auth-api
   ports:
     - port: 8100
       targetPort: 8100
