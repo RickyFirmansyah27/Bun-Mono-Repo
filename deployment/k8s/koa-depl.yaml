@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bun-koa-api
-          image: ghcr.io/rickyfirmansyah27/koa-service:latest
+          image: ghcr.io/rickyfirmansyah27/koa-service:20241127063701
           env:
             - name: JWT_SECRET
               value: 'qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u'
