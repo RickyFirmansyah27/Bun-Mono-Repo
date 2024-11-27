@@ -1,0 +1,34 @@
+{
+  "name": "db-migration",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "migrate:up": "bunx prisma migrate deploy",
+    "migrate:down": "bunx prisma migrate reset",
+    "migrate:create": "bunx prisma migrate dev --name",
+    "clean": "rm -rf dist",
+    "prebuild": "npm run clean",
+    "build": "bun build ./src/index.ts --outdir ./dist --target node",
+    "dev": "bun run --watch src/index.ts",
+    "lint": "eslint . --ext .ts",
+    "check-types": "tsc --noEmit",
+    "prestart": "npm run build",
+    "start": "bun run dist/index.js"
+  },
+  "dependencies": {
+    "@bun/utils": "workspace:*",
+    "@prisma/client": "^5.22.0",
+    "pg": "^8.11.3",
+    "redis": "^4.6.11"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.10.9",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "bun-types": "latest",
+    "eslint": "^8.0.0",
+    "prisma": "^5.22.0",
+    "typescript": "^5.0.0"
+  }
+}
