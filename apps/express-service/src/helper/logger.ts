@@ -2,9 +2,11 @@ import moment from "moment";
 import { createLogger, format, transports } from "winston";
 import { Logtail } from "@logtail/node";
 import { LogtailTransport } from "@logtail/winston";
+import { config } from 'dotenv';
+config({ path: './express-service.env' });
 
 // Inisialisasi Logtail dengan API key
-const logtail = new Logtail("BTYawmJrpt9cF84Wrzi9PQqR");
+const logtail = new Logtail(process.env.LOGTAIL_API_KEY || "qLeeazh2QzV47U2f7EnoMhT8");
 
 const { combine, timestamp, printf, colorize } = format;
 
