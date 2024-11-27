@@ -2,26 +2,29 @@
 FROM oven/bun:1 AS builder
 WORKDIR /app
 
-# Copy seluruh proyek termasuk semua packages dan apps
-COPY . .
+# Salin hanya file yang relevan dari konteks ./apps/db-migration
+COPY package.json ./
+COPY prisma ./prisma
+COPY src ./src
+COPY tsconfig.json ./
 
 # Install dependencies
 RUN bun install
 
-# Build semua packages (misalnya `bun build` digunakan untuk membuild package)
-RUN bun run build --filter=@bun/utils
-RUN cd apps/auth-service && bun run build
+# Build aplikasi
+RUN bun run build
 
 # Stage 2: Runner (Production)
 FROM oven/bun:1-slim AS runner
 WORKDIR /app
 
-# Copy hasil build dari packages dan db-migration
-COPY --from=builder /app/packages/bun.utils/dist /app/node_modules/@bun/utils
-COPY --from=builder /app/apps/db-migration/dist ./apps/db-migration/dist
-COPY --from=builder /app/apps/db-migration/package.json ./apps/db-migration/
+# Salin hasil build dan file yang relevan dari stage builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/package.json ./
+COPY --from=builder /app/prisma ./prisma
 
-# Set up environment
-ENV PORT=8100
-EXPOSE 8100
-CMD ["bun", "apps/db-migration/dist/index.js"]
+# Set DATABASE_URL sebagai argumen lingkungan
+ENV DATABASE_URL=postgres://postgres:postgres@postgres:5432/myapp?sslmode=disable
+
+# Jalankan migrasi saat kontainer dimulai
+CMD ["bunx", "prisma", "migrate", "deploy"]

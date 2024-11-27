@@ -17,7 +17,6 @@
     "start": "bun run dist/index.js"
   },
   "dependencies": {
-    "@bun/utils": "workspace:*",
     "@prisma/client": "^5.22.0",
     "pg": "^8.11.3",
     "redis": "^4.6.11"
