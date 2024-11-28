@@ -14,26 +14,16 @@ spec:
     spec:
       containers:
         - name: bun-koa-api
-          image: ghcr.io/rickyfirmansyah27/koa-service:20241127063701
+          image: ghcr.io/rickyfirmansyah27/koa-service:20241127121459
           env:
             - name: JWT_SECRET
-              value: 'qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u'
+              value: qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
             - name: PORT
-              value: '8005'
-            - name: DB_HOST
-              value: db.ewpvmtfpdvvldyrhksic.supabase.co
-            - name: DB_PORT
-              value: '5432'
-            - name: DB_USER
-              value: postgres
-            - name: DB_PASSWORD
-              value: postgres
-            - name: DB_NAME
-              value: myapp
-            - name: DB_SSL
-              value: 'true'
+              value: 8100
+            - name: DATABASE_URL
+              value: postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
             - name: LOGTAIL_API_KEY
-              value: 'qLeeazh2QzV47U2f7EnoMhT8'
+              value: qLeeazh2QzV47U2f7EnoMhT8
           resources:
             requests:
               memory: '512Mi'
