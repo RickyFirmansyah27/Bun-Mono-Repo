@@ -19,18 +19,18 @@ spec:
             - name: JWT_SECRET
               value: qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
             - name: PORT
-              value: "8001"
+              value: '8001'
             - name: DATABASE_URL
               value: postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
             - name: LOGTAIL_API_KEY
               value: qLeeazh2QzV47U2f7EnoMhT8
           resources:
             requests:
-              memory: "512Mi"
-              cpu: "500m"
+              memory: '512Mi'
+              cpu: '500m'
             limits:
-              memory: "1Gi"
-              cpu: "1"
+              memory: '1Gi'
+              cpu: '1'
       imagePullSecrets:
         - name: ghcr-secret
 ---
@@ -44,4 +44,3 @@ spec:
   ports:
     - port: 8001
       targetPort: 8001
-
