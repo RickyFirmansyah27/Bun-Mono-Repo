@@ -24,7 +24,7 @@ COPY --from=builder /app/package.json ./
 COPY --from=builder /app/prisma ./prisma
 
 # Set DATABASE_URL sebagai argumen lingkungan
-ENV DATABASE_URL=postgres://postgres:postgres@postgres:5432/myapp?sslmode=disable
+ENV DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
 
 # Jalankan migrasi saat kontainer dimulai
 CMD ["bunx", "prisma", "migrate", "deploy"]
