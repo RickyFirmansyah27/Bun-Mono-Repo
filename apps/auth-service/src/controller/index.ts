@@ -5,6 +5,7 @@ import crypto from 'crypto';
 import { config } from 'dotenv';
 config({ path: './auth-service.env' });
 import sql from '../db';
+import AuthServices from '../services';
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
@@ -28,14 +29,27 @@ const indexController: IHandler = (ctx: Context) => {
 
 const getAllUsersController: IHandler = async (ctx: Context) => {
   try {
-    //     const users = await sql`DROP TYPE "Role";
-    // `;
-    const users = await sql`SELECT * FROM "User"`;
+    const users = await AuthServices.getAllUsers();
 
     return BaseResponse(ctx, 'Get all users', 'success', users);
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Unknown error';
     return BaseResponse(ctx, message, 'badRequest', null);
+  }
+};
+
+const gerUserDetailController: IHandler = async (ctx: Context) => {
+  try {
+    const user =
+      await sql`SELECT * FROM "UserProfile" WHERE id = ${ctx.params.id}`;
+    return BaseResponse(ctx, 'Get user detail', 'success', user);
+  } catch (error) {
+    return BaseResponse(
+      ctx,
+      'Error on get user detail',
+      'internalServerError',
+      null
+    );
   }
 };
 
@@ -48,11 +62,7 @@ const registerController: IHandler = async (ctx: Context) => {
     hash.update(body.password);
     const hashedPassword = hash.digest('hex');
 
-    const user = await sql`
-      INSERT INTO "User" (name, password) 
-      VALUES (${body.name}, ${hashedPassword}) 
-      RETURNING *
-    `;
+    const user = await AuthServices.createUser(body.name, hashedPassword);
 
     return BaseResponse(ctx, 'Register success', 'success', user);
   } catch (error: unknown) {
@@ -64,9 +74,9 @@ const registerController: IHandler = async (ctx: Context) => {
 const loginController: IHandler = async (ctx: Context) => {
   try {
     const body = (await ctx.req.json()) as any;
-    validateBody(body, ['username', 'password']);
+    validateBody(body, ['name', 'password']);
 
-    const user = await sql`SELECT * FROM "User" WHERE name = ${body.username}`;
+    const user = await AuthServices.getUserByName(body.name);
     if (!user.length) {
       throw new Error('User not found');
     }
@@ -79,7 +89,7 @@ const loginController: IHandler = async (ctx: Context) => {
       throw new Error('Invalid password');
     }
 
-    const token = jwt.sign({ username: body.username }, secret as string, {
+    const token = jwt.sign({ name: body.name }, secret as string, {
       expiresIn: jwtExpired,
       issuer: jwtIssuer,
       audience: jwtAudience,
@@ -121,6 +131,7 @@ const protectedController: IHandler = async (ctx: Context) => {
 export default {
   indexController,
   getAllUsersController,
+  gerUserDetailController,
   registerController,
   loginController,
   refreshTokenController,

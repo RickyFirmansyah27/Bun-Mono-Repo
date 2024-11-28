@@ -12,7 +12,7 @@ datasource db {
 
 model User {
   id    Int     @id @default(autoincrement())
-  name  String
+  name  String  @unique
   password String
   profile UserProfile?
   createdAt DateTime @default(now())
@@ -21,7 +21,7 @@ model User {
 model UserProfile {
   id        Int       @id @default(autoincrement())
   fullname  String
-  email     String    @unique
+  email     String?    @unique
   phone     String?
   address   String?
   role      Role      @default(express)
