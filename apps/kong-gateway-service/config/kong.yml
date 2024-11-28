@@ -43,3 +43,47 @@ services:
           - /api/express
         strip_path: false
         preserve_host: false
+  
+  - name: hono-service
+    url: http://hono-service:8002
+    plugins:
+      - name: auth
+    routes:
+      - name: hono-route
+        paths:
+          - /api/hono
+        strip_path: false
+        preserve_host: false
+
+  - name: elysia-service
+    url: http://elysia-service:8003
+    plugins:
+      - name: auth
+    routes:
+      - name: elysia-route
+        paths:
+          - /api/elysia
+        strip_path: false
+        preserve_host: false
+
+  - name: fastify-service
+    url: http://fastify-service:8004
+    plugins:
+      - name: auth
+    routes:
+      - name: fastify-route
+        paths:
+          - /api/fastify
+        strip_path: false
+        preserve_host: false
+
+  - name: koa-service
+    url: http://koa-service:8005
+    plugins:
+      - name: auth
+    routes:
+      - name: koa-route
+        paths:
+          - /api/koa
+        strip_path: false
+        preserve_host: false
