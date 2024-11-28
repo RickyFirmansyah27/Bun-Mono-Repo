@@ -3,7 +3,7 @@ import express from 'express';
 import { type Express } from 'express';
 
 const app: Express = express();
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 app.use(express.json());
 
