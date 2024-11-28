@@ -15,12 +15,13 @@
   },
   "dependencies": {
     "@bun/utils": "workspace:*",
+    "@neondatabase/serverless": "^0.10.4",
     "@types/jsonwebtoken": "^9.0.7",
     "baojs": "^0.2.1",
+    "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.11.3",
-    "redis": "^4.6.11",
-    "dotenv": "^16.4.5"
+    "redis": "^4.6.11"
   },
   "devDependencies": {
     "@types/pg": "^8.10.9",
