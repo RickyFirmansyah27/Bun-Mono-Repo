@@ -7,7 +7,8 @@ type ResponseType =
   | 'unauthorized'
   | 'forbidden'
   | 'badRequest'
-  | 'internalServerError';
+  | 'internalServerError'
+  | 'notFound';
 
 export const BaseResponse = (
   ctx: Context,
@@ -38,6 +39,10 @@ export const BaseResponse = (
     case 'forbidden':
       response = BusinessException.unauthorizedResponse(resMessage);
       status = 403;
+      break;
+    case 'notFound':
+      response = BusinessException.notFoundResponse(resMessage);
+      status = 404;
       break;
     case 'internalServerError':
       response = BusinessException.internalServerErrorResponse();

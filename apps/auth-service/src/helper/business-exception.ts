@@ -4,7 +4,7 @@ export const BusinessException = {
       statusCode: 200,
       status: true,
       data,
-      message
+      message,
     };
   },
 
@@ -12,7 +12,7 @@ export const BusinessException = {
     return {
       statusCode: 201,
       status: true,
-      message
+      message,
     };
   },
 
@@ -21,7 +21,7 @@ export const BusinessException = {
       statusCode: 400,
       status: false,
       error: message,
-      errors
+      errors,
     };
   },
 
@@ -29,7 +29,7 @@ export const BusinessException = {
     return {
       statusCode: 500,
       status: false,
-      error: 'Internal server error'
+      error: 'Internal server error',
     };
   },
 
@@ -37,7 +37,14 @@ export const BusinessException = {
     return {
       statusCode: 401,
       status: false,
-      error: message
+      error: message,
     };
-  }
+  },
+  notFoundResponse: (message: string) => {
+    return {
+      statusCode: 401,
+      status: false,
+      error: message,
+    };
+  },
 };
