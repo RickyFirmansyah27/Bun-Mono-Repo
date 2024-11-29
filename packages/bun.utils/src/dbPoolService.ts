@@ -1,12 +1,13 @@
 import { Pool, PoolClient } from 'pg';
-import { Logger } from '../helper/logger.js';
+import { Logger } from './logger.js';
 import { config } from 'dotenv';
 import path from 'path';
-const envPath = path.resolve(__dirname, '../../.env');
+const envPath = path.resolve(__dirname, '../.env');
 config({ path: envPath });
 
 
-const contextLogger = '[POSTGRES_DB.connection]';
+
+const contextLogger = '[Neon DB - connection]';
 const DBPool = new Pool({
   connectionString: process.env.DATABASE_URL,
   max: 5,
@@ -19,9 +20,11 @@ export const DBConnection = async (): Promise<void> => {
   try {
     const client = await DBPool.connect();
     const result = await client.query('SELECT 1');
+    const version = await client.query('SELECT version()');
     Logger.info(`${contextLogger} | Database connection successfully`, {
       connection: result.rows.length > 0,
     });
+    Logger.info(`${contextLogger} | version: ${version.rows[0].version}`);
     client.release();
   } catch (err) {
     Logger.info(`${contextLogger} | Database connection error`, {

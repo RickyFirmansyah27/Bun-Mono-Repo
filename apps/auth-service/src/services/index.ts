@@ -1,5 +1,5 @@
 import sql from '../db';
-import { executeSQLQuery, executeSQLTransaction } from '../db/dbPoolService';
+import { executeSQLQuery, executeSQLTransaction } from '@bun/utils';
 
 const getAllUsers = () => {
   const query = 'SELECT * FROM "User"';
