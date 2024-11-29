@@ -42,9 +42,11 @@ const getAllUsersController: IHandler = async (ctx: Context) => {
 
 const gerUserDetailController: IHandler = async (ctx: Context) => {
   try {
-    const user =
-      await sql`SELECT * FROM "UserProfile" WHERE id = ${ctx.params.id}`;
-    return BaseResponse(ctx, 'Get user detail', 'success', user);
+    const user = await AuthServices.getUserDetail(ctx.params.id);
+    if (!user.length) {
+      return BaseResponse(ctx, 'User not found', 'notFound', null);
+    }
+    return BaseResponse(ctx, 'Get user detail', 'success', user[0]);
   } catch (error) {
     return BaseResponse(
       ctx,
