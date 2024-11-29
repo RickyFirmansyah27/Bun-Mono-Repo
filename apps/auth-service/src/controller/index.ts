@@ -2,10 +2,12 @@ import { IHandler, Context } from 'baojs';
 import { BaseResponse } from '../helper';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { config } from 'dotenv';
-config({ path: './auth-service.env' });
 import sql from '../db';
 import AuthServices from '../services';
+import { config } from 'dotenv';
+import path from 'path';
+const envPath = path.resolve(__dirname, '../../.env');
+config({ path: envPath });
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
@@ -56,13 +58,13 @@ const gerUserDetailController: IHandler = async (ctx: Context) => {
 const registerController: IHandler = async (ctx: Context) => {
   try {
     const body = (await ctx.req.json()) as any;
-    validateBody(body, ['name', 'password']);
+    validateBody(body, ['username', 'password']);
 
     const hash = crypto.createHash('sha256');
     hash.update(body.password);
     const hashedPassword = hash.digest('hex');
 
-    const user = await AuthServices.createUser(body.name, hashedPassword);
+    const user = await AuthServices.createUser(body.username, hashedPassword);
 
     return BaseResponse(ctx, 'Register success', 'success', user);
   } catch (error: unknown) {
@@ -74,9 +76,9 @@ const registerController: IHandler = async (ctx: Context) => {
 const loginController: IHandler = async (ctx: Context) => {
   try {
     const body = (await ctx.req.json()) as any;
-    validateBody(body, ['name', 'password']);
+    validateBody(body, ['username', 'password']);
 
-    const user = await AuthServices.getUserByName(body.name);
+    const user = await AuthServices.getUserByName(body.username);
     if (!user.length) {
       throw new Error('User not found');
     }
