@@ -11,26 +11,34 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
+  id    Int           @id @default(autoincrement())
+  name  String        @unique
   password String
   profile UserProfile?
-  createdAt DateTime @default(now())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
 }
 
 model UserProfile {
   id        Int       @id @default(autoincrement())
   fullname  String
-  email     String?    @unique
+  email     String?   @unique
   phone     String?
   address   String?
-  role      Role      @default(express)
+  role      Role      @default(user)
+  appRole   AppRole   @default(express)
   createdAt DateTime  @default(now())
+  updatedAt DateTime  @default(now()) @updatedAt
   userId    Int       @unique
-  user      User      @relation(fields: [userId], references: [id])
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum Role {
+  admin
+  user
+}
+
+enum AppRole {
   express
   hono
   fastify
