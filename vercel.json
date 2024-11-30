@@ -1,0 +1,56 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "apps/auth-service/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "apps/express-service/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "apps/hono-service/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "apps/elysia-service/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "apps/fastify-service/package.json",
+        "use": "@vercel/node"
+      },
+      {
+        "src": "apps/koa-service/package.json",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/auth/(.*)",
+        "dest": "/apps/auth-service/$1"
+      },
+      {
+        "src": "/express/(.*)",
+        "dest": "/apps/express-service/$1"
+      },
+      {
+        "src": "/hono/(.*)",
+        "dest": "/apps/hono-service/$1"
+      },
+      {
+        "src": "/elysia/(.*)",
+        "dest": "/apps/elysia-service/$1"
+      },
+      {
+        "src": "/fastify/(.*)",
+        "dest": "/apps/fastify-service/$1"
+      },
+      {
+        "src": "/koa/(.*)",
+        "dest": "/apps/koa-service/$1"
+      }
+    ]
+  }
+  
