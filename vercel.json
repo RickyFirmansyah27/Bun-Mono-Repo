@@ -2,16 +2,36 @@
   "version": 2,
   "builds": [
     {
-      "src": "server.js",
+      "src": "apps/auth-service/dist/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/express-service/dist/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/hono-service/dist/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/elysia-service/dist/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/fastify-service/dist/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/koa-service/dist/index.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
-    { "src": "/auth/(.*)", "dest": "/auth/$1" },
-    { "src": "/express/(.*)", "dest": "/express/$1" },
-    { "src": "/hono/(.*)", "dest": "/hono/$1" },
-    { "src": "/elysia/(.*)", "dest": "/elysia/$1" },
-    { "src": "/fastify/(.*)", "dest": "/fastify/$1" },
-    { "src": "/koa/(.*)", "dest": "/koa/$1" }
+    { "src": "/auth/(.*)", "dest": "apps/auth-service/dist/index.js" },
+    { "src": "/express/(.*)", "dest": "apps/express-service/dist/index.js" },
+    { "src": "/hono/(.*)", "dest": "apps/hono-service/dist/index.js" },
+    { "src": "/elysia/(.*)", "dest": "apps/elysia-service/dist/index.js" },
+    { "src": "/fastify/(.*)", "dest": "apps/fastify-service/dist/index.js" },
+    { "src": "/koa/(.*)", "dest": "apps/koa-service/dist/index.js" }
   ]
 }
