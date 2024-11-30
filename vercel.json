@@ -6,19 +6,19 @@
       "use": "@vercel/node"
     },
     {
-      "src": "apps/express-service/package.json",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "apps/hono-service/package.json",
-      "use": "@vercel/node"
-    },
-    {
       "src": "apps/elysia-service/package.json",
       "use": "@vercel/node"
     },
     {
+      "src": "apps/express-service/package.json",
+      "use": "@vercel/node"
+    },
+    {
       "src": "apps/fastify-service/package.json",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "apps/hono-service/package.json",
       "use": "@vercel/node"
     },
     {
@@ -28,33 +28,28 @@
   ],
   "routes": [
     {
-      "src": "/auth/(.*)",
-      "dest": "apps/auth-service/$1"
+      "src": "/api/auth/(.*)",
+      "dest": "/apps/auth-service/$1"
     },
     {
-      "src": "/express/(.*)",
-      "dest": "apps/express-service/$1"
+      "src": "/api/elysia/(.*)",
+      "dest": "/apps/elysia-service/$1"
     },
     {
-      "src": "/hono/(.*)",
-      "dest": "apps/hono-service/$1"
+      "src": "/api/express/(.*)",
+      "dest": "/apps/express-service/$1"
     },
     {
-      "src": "/elysia/(.*)",
-      "dest": "apps/elysia-service/$1"
+      "src": "/api/fastify/(.*)",
+      "dest": "/apps/fastify-service/$1"
     },
     {
-      "src": "/fastify/(.*)",
-      "dest": "apps/fastify-service/$1"
+      "src": "/api/hono/(.*)",
+      "dest": "/apps/hono-service/$1"
     },
     {
-      "src": "/koa/(.*)",
-      "dest": "apps/koa-service/$1"
-    },
-    {
-      "src": "/(.*)",
-      "status": 404,
-      "dest": "/404.html"
+      "src": "/api/koa/(.*)",
+      "dest": "/apps/koa-service/$1"
     }
   ]
 }
