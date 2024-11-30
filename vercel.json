@@ -29,27 +29,27 @@
     "routes": [
       {
         "src": "/auth/(.*)",
-        "dest": "/apps/auth-service/$1"
+        "dest": "apps/auth-service/api/$1"
       },
       {
         "src": "/express/(.*)",
-        "dest": "/apps/express-service/$1"
+        "dest": "apps/express-service/api/$1"
       },
       {
         "src": "/hono/(.*)",
-        "dest": "/apps/hono-service/$1"
+        "dest": "apps/hono-service/api/$1"
       },
       {
         "src": "/elysia/(.*)",
-        "dest": "/apps/elysia-service/$1"
+        "dest": "apps/elysia-service/api/$1"
       },
       {
         "src": "/fastify/(.*)",
-        "dest": "/apps/fastify-service/$1"
+        "dest": "apps/fastify-service/api/$1"
       },
       {
         "src": "/koa/(.*)",
-        "dest": "/apps/koa-service/$1"
+        "dest": "apps/koa-service/api/$1"
       }
     ]
   }
