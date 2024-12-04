@@ -6,6 +6,7 @@
     "dev": "turbo dev",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "start": "turbo dev",
     "start-auth": "turbo run start --filter=auth-service",
     "start-elysia": "turbo run start --filter=elysia-service",
     "start-express": "turbo run start --filter=express-service",
