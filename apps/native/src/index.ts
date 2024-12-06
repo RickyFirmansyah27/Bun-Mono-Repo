@@ -1,19 +1,46 @@
-import { serve } from 'bun';
-import routes from './routes';
+import { IncomingMessage, ServerResponse } from 'http';
+import { Logger } from "@bun/utils";
+import { createServer } from "http";
+import { parse } from "url";
 
-serve({
-  port: 3000,
-  fetch(req: Request) {
-    const { pathname } = new URL(req.url);
-    const { method } = req;
-    const route = routes.find(
-      (route) => route.path === pathname && route.method === method
-    );
-    if (route) {
-      return route.handler(req);
-    }
-    return new Response('Not Found', { status: 404 });
-  },
+interface Route {
+  path: string;
+  method: string;
+  handler: (req: IncomingMessage, res: ServerResponse) => void;
+}
+
+const port = 8101;
+const basePrefix = '/auth';
+
+const routes: Route[] = [
+  { path: `${basePrefix}`, method: 'GET', handler: (req: IncomingMessage, res: ServerResponse ) => res.end('Welcome to Hyper Express') },
+  { path: `${basePrefix}/user`, method: 'GET', handler: (req: IncomingMessage, res: ServerResponse ) => res.end('User route accessed!') },
+  { path: `${basePrefix}/hello-bun`, method: 'GET', handler: (req: IncomingMessage, res: ServerResponse ) => res.end('Hello Bun!') },
+];
+
+const server = createServer((req, res) => {
+  const method = req.method!;
+  const url = parse(req.url!, true);
+  const route = routes.find(route => route.path === url.pathname && route.method === method);
+
+  if (route) {
+    return route.handler(req, res);
+  } else {
+    res.statusCode = 404;
+    res.end('Route Not Found');
+  }
 });
 
-console.log('Listening on localhost:3000');
+server.listen(port, () => {
+  try {
+      Logger.info(`[Native-Service] Server is running on port ${port}`);
+  } catch (error) {
+      if (error instanceof Error) {
+          Logger.error(
+              `Error starting server: Message: ${error.message} | Stack: ${error.stack}`
+          );
+      } else {
+          Logger.error(`Error starting server: ${String(error)}`);
+      }
+  }
+});

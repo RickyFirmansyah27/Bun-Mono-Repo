@@ -3,10 +3,10 @@
   "private": true,
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev",
+    "dev": "turbo dev  --concurrency=11",
     "lint": "turbo lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start": "turbo build && bun run dev",
+    "start": "turbo build && bun run dev  --concurrency=11",
     "start-auth": "turbo run start --filter=auth-service",
     "start-elysia": "turbo run start --filter=elysia-service",
     "start-express": "turbo run start --filter=express-service",
