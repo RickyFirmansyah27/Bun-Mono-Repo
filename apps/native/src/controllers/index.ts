@@ -1,3 +1,4 @@
+import { IncomingMessage, ServerResponse } from 'http';
 import services from '../services';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
@@ -16,82 +17,115 @@ const validateBody = (body: any, requiredFields: string[]) => {
   }
 };
 
-const Index = (req: Request): Response => {
-  return new Response('Home route accessed!');
+const Index = (req: IncomingMessage, res: ServerResponse) => {
+  res.end('Home route accessed!');
 };
-const Register = async (req: Request): Promise<Response> => {
-  if (req.headers.get('Content-Type') !== 'application/json') {
-    throw new Error('Invalid content type. Use application/json');
-  }
-  try {
-    const body = await req.json();
-    validateBody(body, ['username', 'password']);
-    //hash password
-    const hash = crypto.createHash('sha256');
-    hash.update(body.password);
-    const hashedPassword = hash.digest('hex');
-    const user = await services.createUser(body.username, hashedPassword);
-    return new Response(JSON.stringify(user), { status: 201 });
-  } catch (error) {
-    const err = `Error: ${(error as Error).message}`;
-    return new Response(err, { status: 400 });
-  }
+const Register = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
+  let body = '';
+  req.on('data', (chunk) => {
+    body += chunk.toString();
+  });
+  req.on('end', async () => {
+    try {
+      if (req.headers['content-type'] !== 'application/json') {
+        throw new Error('Invalid content type. Use application/json');
+      }
+      const parsedData = JSON.parse(body); // Parse JSON
+      validateBody(parsedData, ['username', 'password']);
+
+      // Hash password
+      const hash = crypto.createHash('sha256');
+      hash.update(parsedData.password);
+      const hashedPassword = hash.digest('hex');
+
+      // Create user
+      const user = await services.createUser(
+        parsedData.username,
+        hashedPassword
+      );
+      res.writeHead(201, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(user));
+    } catch (error) {
+      console.error('Error:', error);
+      res.writeHead(400, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ error: (error as Error).message }));
+    }
+  });
 };
 
-const Login = async (req: Request): Promise<Response> => {
-  if (req.headers.get('Content-Type') !== 'application/json') {
-    throw new Error('Invalid content type. Use application/json');
-  }
+const Login = async (
+  req: IncomingMessage,
+  res: ServerResponse
+): Promise<void> => {
   try {
-    const body = await req.json();
-    validateBody(body, ['username', 'password']);
-
-    const user = await services.getUserByName(body.username);
-    if (!user.length) {
-      throw new Error('User not found');
-    }
-
-    const hash = crypto.createHash('sha256');
-    hash.update(body.password);
-    const hashedPassword = hash.digest('hex');
-
-    if (user[0].password !== hashedPassword) {
-      throw new Error('Invalid password');
-    }
-
-    const token = jwt.sign({ name: body.name }, secret as string, {
-      expiresIn: jwtExpired,
-      issuer: jwtIssuer,
-      audience: jwtAudience,
+    let body = '';
+    req.on('data', (chunk) => {
+      body += chunk.toString();
     });
+    req.on('end', async () => {
+      try {
+        if (req.headers['content-type'] !== 'application/json') {
+          throw new Error('Invalid content type. Use application/json');
+        }
+        const parsedData = JSON.parse(body); // Parse JSON
+        validateBody(parsedData, ['username', 'password']);
 
-    const res = {
-      user: user[0],
-      token,
-    };
+        // Hash password
+        const hash = crypto.createHash('sha256');
+        hash.update(parsedData.password);
+        const hashedPassword = hash.digest('hex');
 
-    return new Response(JSON.stringify(res), { status: 201 });
+        // Get user
+        const user = await services.getUserByName(parsedData.username);
+        if (!user.length) {
+          throw new Error('User not found');
+        }
+
+        if (user[0].password !== hashedPassword) {
+          throw new Error('Invalid password');
+        }
+        const payload = { username: user[0].name, id: user[0].id };
+        const token = jwt.sign(payload, secret as string, {
+          expiresIn: jwtExpired,
+          issuer: jwtIssuer,
+          audience: jwtAudience,
+        });
+        res.end(JSON.stringify({ user: user[0], token }));
+      } catch (error) {
+        console.error('Error:', error);
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(
+          JSON.stringify({ error: (error as Error).message, msg: 'zehahaha' })
+        );
+      }
+    });
   } catch (error) {
-    const err = `Error: ${(error as Error).message}`;
-    return new Response(err, { status: 400 });
+    console.error('Error:', error);
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: (error as Error).message, msg: 'kiwkiw' }));
   }
 };
-const Protect = (req: Request): Response => {
-  const authHeader = req.headers.get('Authorization');
+const Protect = (req: IncomingMessage, res: ServerResponse): void => {
+  const authHeader = req.headers.authorization;
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return new Response('Invalid or expired token', { status: 401 });
+    throw new Error('Invalid token');
   }
 
   const token = authHeader.split(' ')[1];
   try {
-    jwt.verify(token, secret as string, {
+    const decodedToken = jwt.verify(token, secret as string, {
       issuer: jwtIssuer,
       audience: jwtAudience,
     });
-    return new Response('Protected route accessed!');
+    console.log('decodedToken', decodedToken);
+    res.end('Protected route accessed!');
   } catch (error) {
-    const err = `Error: ${(error as Error).message}`;
-    return new Response(err, { status: 400 });
+    console.error('Error:', error);
+    res.writeHead(400, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ error: (error as Error).message }));
   }
 };
 

@@ -1,9 +1,10 @@
+import { IncomingMessage, ServerResponse } from 'http';
 import controllers from '../controllers';
 
 interface Route {
-  path: String;
-  method: String;
-  handler: (req: Request) => Response | Promise<Response>;
+  path: string;
+  method: string;
+  handler: (req: IncomingMessage, res: ServerResponse) => void | Promise<void>;
 }
 
 const basePrefix = '/bun';
