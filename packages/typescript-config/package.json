@@ -3,6 +3,11 @@
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
+  "scripts": {
+    "build": "bun build ./src/index.ts --outdir ./dist",
+    "dev": "bun --watch src/index.ts",
+    "start": "bun run dist/index.js"
+  },
   "publishConfig": {
     "access": "public"
   }
