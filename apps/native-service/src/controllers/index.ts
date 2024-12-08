@@ -2,7 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import services from '../services';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
-import { Logger } from '@bun/utils';
+import { BaseResponse, Logger } from '../helper';
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
@@ -19,7 +19,10 @@ const validateBody = (body: any, requiredFields: string[]) => {
 };
 
 const Index = (req: IncomingMessage, res: ServerResponse) => {
-  res.end('Home route accessed!');
+  const response = {
+    message: 'Hello from index route',
+  };
+  BaseResponse(res, 'You are accessing index route', 'success', response);
 };
 const Register = async (
   req: IncomingMessage,
@@ -48,11 +51,13 @@ const Register = async (
         hashedPassword
       );
       res.writeHead(201, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(user));
+      BaseResponse(res, 'User created', 'success', user);
+      // res.end(JSON.stringify(user));
     } catch (error) {
       Logger.error('Error:', error);
       res.writeHead(400, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ error: (error as Error).message }));
+      BaseResponse(res, (error as Error).message, 'badRequest', null);
+      // res.end(JSON.stringify({ error: (error as Error).message }));
     }
   });
 };
@@ -94,19 +99,21 @@ const Login = async (
           issuer: jwtIssuer,
           audience: jwtAudience,
         });
-        res.end(JSON.stringify({ user: user[0], token }));
+        // res.end(JSON.stringify({ user: user[0], token }));
+        const result = {
+          user: user[0],
+          token,
+        };
+        BaseResponse(res, 'Login success', 'success', result);
       } catch (error) {
         Logger.error('Error:', error);
         res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(
-          JSON.stringify({ error: (error as Error).message, msg: 'zehahaha' })
-        );
+        BaseResponse(res, (error as Error).message, 'badRequest', null);
       }
     });
   } catch (error) {
-    Logger.error('Error:', error);
     res.writeHead(400, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: (error as Error).message, msg: 'kiwkiw' }));
+    BaseResponse(res, (error as Error).message, 'badRequest', null);
   }
 };
 const Protect = (req: IncomingMessage, res: ServerResponse): void => {
@@ -121,12 +128,13 @@ const Protect = (req: IncomingMessage, res: ServerResponse): void => {
       issuer: jwtIssuer,
       audience: jwtAudience,
     });
-    Logger.log('decodedToken', decodedToken);
-    res.end('Protected route accessed!');
+    Logger.info(`[Token Payload]: ${JSON.stringify(decodedToken)}`);
+    BaseResponse(res, 'Protected route accessed!', 'success', decodedToken);
+    // res.end('Protected route accessed!');
   } catch (error) {
     Logger.error('Error:', error);
     res.writeHead(400, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ error: (error as Error).message }));
+    BaseResponse(res, (error as Error).message, 'badRequest', null);
   }
 };
 
