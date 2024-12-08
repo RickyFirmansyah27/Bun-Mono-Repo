@@ -1,11 +1,13 @@
 import { Logger } from '@bun/utils';
-import { createServer } from 'http';
+import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { parse } from 'url';
 import routes from './routes';
+import createMiddlewareHandler from './middlewares';
+import { BaseResponse, HttpLogger } from './helper';
 
 const port = 8101;
 
-const server = createServer((req, res) => {
+const routeHandlers = (req: IncomingMessage, res: ServerResponse) => {
   const method = req.method!;
   const url = parse(req.url!, true);
   const route = routes.find(
@@ -15,11 +17,13 @@ const server = createServer((req, res) => {
   if (route) {
     return route.handler(req, res);
   } else {
-    res.statusCode = 404;
-    res.end('Route Not Found');
+    BaseResponse(res, 'Route not found', 'notFound', null);
   }
-});
+};
 
+const handler = createMiddlewareHandler(HttpLogger, routeHandlers);
+
+const server = createServer(handler);
 server.listen(port, () => {
   try {
     Logger.info(`[Native-Service] Server is running on port ${port}`);
