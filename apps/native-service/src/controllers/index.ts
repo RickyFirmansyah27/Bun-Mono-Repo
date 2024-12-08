@@ -2,6 +2,7 @@ import { IncomingMessage, ServerResponse } from 'http';
 import services from '../services';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import { Logger } from '@bun/utils';
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
@@ -49,7 +50,7 @@ const Register = async (
       res.writeHead(201, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(user));
     } catch (error) {
-      console.error('Error:', error);
+      Logger.error('Error:', error);
       res.writeHead(400, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: (error as Error).message }));
     }
@@ -95,7 +96,7 @@ const Login = async (
         });
         res.end(JSON.stringify({ user: user[0], token }));
       } catch (error) {
-        console.error('Error:', error);
+        Logger.error('Error:', error);
         res.writeHead(400, { 'Content-Type': 'application/json' });
         res.end(
           JSON.stringify({ error: (error as Error).message, msg: 'zehahaha' })
@@ -103,7 +104,7 @@ const Login = async (
       }
     });
   } catch (error) {
-    console.error('Error:', error);
+    Logger.error('Error:', error);
     res.writeHead(400, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: (error as Error).message, msg: 'kiwkiw' }));
   }
@@ -120,10 +121,10 @@ const Protect = (req: IncomingMessage, res: ServerResponse): void => {
       issuer: jwtIssuer,
       audience: jwtAudience,
     });
-    console.log('decodedToken', decodedToken);
+    Logger.log('decodedToken', decodedToken);
     res.end('Protected route accessed!');
   } catch (error) {
-    console.error('Error:', error);
+    Logger.error('Error:', error);
     res.writeHead(400, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ error: (error as Error).message }));
   }

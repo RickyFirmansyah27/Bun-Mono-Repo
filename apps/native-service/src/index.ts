@@ -1,4 +1,3 @@
-import { IncomingMessage, ServerResponse } from 'http';
 import { Logger } from '@bun/utils';
 import { createServer } from 'http';
 import { parse } from 'url';

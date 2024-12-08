@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@bun/utils": "workspace:*",
-    "@neondatabase/serverless": "^0.10.4",
     "@types/jsonwebtoken": "^9.0.7",
     "dotenv": "^16.4.5",
     "jsonwebtoken": "^9.0.2",

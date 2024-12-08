@@ -8,13 +8,13 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start": "turbo build && bun run dev  --concurrency=11",
     "start-auth": "turbo run start --filter=auth-service",
+    "start-native": "turbo run start --filter=native-service",
     "start-elysia": "turbo run start --filter=elysia-service",
     "start-express": "turbo run start --filter=express-service",
     "start-fastify": "turbo run start --filter=fastify-service",
     "start-hono": "turbo run start --filter=hono-service",
     "start-koa": "turbo run start --filter=koa-service",
-    "start-sample": "turbo run start --filter=sample-service",
-    "start-metrics": "turbo run start --filter=metrics-service"
+    "start-sample": "turbo run start --filter=sample-service"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
