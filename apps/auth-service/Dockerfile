@@ -22,6 +22,6 @@ COPY --from=builder /app/apps/auth-service/dist ./apps/auth-service/dist
 COPY --from=builder /app/apps/auth-service/package.json ./apps/auth-service/
 
 # Set up environment
-ENV PORT=8100
-EXPOSE 8100
+ENV PORT=8101
+EXPOSE 8101
 CMD ["bun", "apps/auth-service/dist/index.js"]

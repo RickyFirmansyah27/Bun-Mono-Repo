@@ -1,21 +1,39 @@
-import Bao from 'baojs';
-import { Logger } from './helper';
-import { PORT_SERVICE, DBConnection } from '@bun/utils';
-import { config } from 'dotenv';
-import path from 'path';
-const envPath = path.resolve(__dirname, '../.env');
-config({ path: envPath });
+import { Logger, PORT_SERVICE } from '@bun/utils';
+import { createServer, IncomingMessage, ServerResponse } from 'http';
+import { parse } from 'url';
+import routes from './routes';
+import createMiddlewareHandler from './middlewares';
+import { BaseResponse, HttpLogger } from './helper';
 
-import initializeRoutes from './routes';
+const port = PORT_SERVICE.authService || 8100;
 
-await DBConnection();
+const routeHandlers = (req: IncomingMessage, res: ServerResponse) => {
+  const method = req.method!;
+  const url = parse(req.url!, true);
+  const route = routes.find(
+    (route) => route.path === url.pathname && route.method === method
+  );
 
-const app = new Bao();
+  if (route) {
+    return route.handler(req, res);
+  } else {
+    BaseResponse(res, 'Route not found', 'notFound', null);
+  }
+};
 
-initializeRoutes(app);
+const handler = createMiddlewareHandler(HttpLogger, routeHandlers);
 
-const port = PORT_SERVICE.authService;
-
-app.listen({ port });
-
-Logger.info(`[Auth-Service] Server is running on port ${port} 🚀🚀🚀`);
+const server = createServer(handler);
+server.listen(port, () => {
+  try {
+    Logger.info(`[Auth-Service] Server is running on port ${port}`);
+  } catch (error) {
+    if (error instanceof Error) {
+      Logger.error(
+        `Error starting server: Message: ${error.message} | Stack: ${error.stack}`
+      );
+    } else {
+      Logger.error(`Error starting server: ${String(error)}`);
+    }
+  }
+});

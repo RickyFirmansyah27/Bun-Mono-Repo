@@ -3,7 +3,6 @@ import { createLogger, format, transports } from 'winston';
 import { Logtail } from '@logtail/node';
 import { LogtailTransport } from '@logtail/winston';
 import { config } from 'dotenv';
-config({ path: './auth-service.env' });
 
 // Inisialisasi Logtail dengan API key
 const logtail = new Logtail(

@@ -1,4 +1,4 @@
-import { Context } from 'baojs';
+import { ServerResponse } from 'http';
 import { BusinessException } from './business-exception';
 
 type ResponseType =
@@ -11,7 +11,7 @@ type ResponseType =
   | 'notFound';
 
 export const BaseResponse = (
-  ctx: Context,
+  res: ServerResponse,
   resMessage: string,
   type: ResponseType,
   result: any = null
@@ -52,5 +52,6 @@ export const BaseResponse = (
       response = BusinessException.successResponse(result, resMessage);
   }
 
-  return ctx.sendPrettyJson(response, { status, headers: {} });
+  res.statusCode = status;
+  res.end(JSON.stringify(response));
 };

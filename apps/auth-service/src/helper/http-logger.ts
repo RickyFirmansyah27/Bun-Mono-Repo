@@ -1,22 +1,25 @@
-import { Context } from 'baojs';
-import { Logger } from './logger.js';
+import { Logger } from './logger';
+import { IncomingMessage, ServerResponse } from 'http';
 
-export const HttpLogger = async (ctx: Context) => {
-  const start = performance.now(); // Start measuring time
+export const HttpLogger = (
+  req: IncomingMessage,
+  res: ServerResponse,
+  next: () => void
+): void => {
+  const start = process.hrtime();
 
-  // Log the incoming request
   Logger.http({
-    message: `Request | Method: ${ctx.method} | Headers: ${JSON.stringify(ctx.headers)} | URL: ${ctx.url}`,
+    message: `Request | Method: ${req.method} | Headers: ${JSON.stringify(req.headers)}  | URL: ${req.url}`,
   });
 
-  // Wait for the response to complete
-  await ctx.res;
+  res.on('finish', () => {
+    const duration = process.hrtime(start);
+    const durationInMs = duration[0] * 1000 + duration[1] / 1e6;
 
-  const end = performance.now(); // End measuring time
-  const durationInMs = end - start;
-
-  // Log the outgoing response
-  Logger.http({
-    message: `Response | Method: ${ctx.method} | URL: ${ctx.url} | Status: ${ctx?.res?.status} | Duration: ${durationInMs.toFixed(2)} ms`,
+    Logger.http({
+      message: `Response | Method: ${req.method} | URL: ${req.url} | Status: ${res.statusCode} | Duration: ${durationInMs.toFixed(2)} ms`,
+    });
   });
+
+  next();
 };
