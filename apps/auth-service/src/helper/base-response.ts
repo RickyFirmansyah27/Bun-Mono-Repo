@@ -34,7 +34,7 @@ export const BaseResponse = (
       break;
     case 'unauthorized':
       response = BusinessException.unauthorizedResponse(resMessage);
-      status = 403;
+      status = 401; // Unauthorized biasanya 401
       break;
     case 'forbidden':
       response = BusinessException.unauthorizedResponse(resMessage);
@@ -53,5 +53,6 @@ export const BaseResponse = (
   }
 
   res.statusCode = status;
+  res.setHeader('Content-Type', 'application/json');
   res.end(JSON.stringify(response));
 };
