@@ -7,7 +7,7 @@ interface Route {
   handler: (req: IncomingMessage, res: ServerResponse) => void | Promise<void>;
 }
 
-const basePrefix = 'api/auth';
+const basePrefix = '/api/auth';
 
 const routes: Route[] = [
   {
