@@ -1,4 +1,4 @@
-import { Logger, PORT_SERVICE } from '@bun/utils';
+import { DBConnection, Logger, PORT_SERVICE, rabbitMqConnection } from '@bun/utils';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { parse } from 'url';
 import routes from './routes';
@@ -24,8 +24,10 @@ const routeHandlers = (req: IncomingMessage, res: ServerResponse) => {
 const handler = createMiddlewareHandler(HttpLogger, routeHandlers);
 
 const server = createServer(handler);
-server.listen(port, () => {
+server.listen(port, async () => {
   try {
+    await DBConnection();
+    await rabbitMqConnection();
     Logger.info(`[Auth-Service] Server is running on port ${port}`);
   } catch (error) {
     if (error instanceof Error) {
