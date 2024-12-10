@@ -1,11 +1,9 @@
 import dotenv from 'dotenv';
-
 dotenv.config();
 
-import boom from 'express-boom';
 import express, { Express } from 'express';
 import { HttpLogger, Logger } from './helper';
-import { PORT_SERVICE } from '@bun/utils';
+import { DBConnection, PORT_SERVICE, rabbitMqConnection } from '@bun/utils';
 import { routes } from './routes';
 
 const app: Express = express();
@@ -21,6 +19,8 @@ routes.forEach(route => {
 
 app.listen(port, async (): Promise<void> => {
   try {
+    await DBConnection();
+    await rabbitMqConnection();
       Logger.info(`[Express-Service] Server is running on port ${port}`);
   } catch (error) {
       if (error instanceof Error) {
