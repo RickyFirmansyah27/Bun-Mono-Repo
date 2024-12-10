@@ -20,7 +20,11 @@ const getUserDetail = async (id: string) => {
   return executeSQLQuery(query, params);
 };
 
-const createUser = async (name: string, hashedPassword: string) => {
+const createUser = async (
+  name: string,
+  email: string,
+  hashedPassword: string
+) => {
   // create user
   const query = `
         INSERT INTO "User" (name, password) 
@@ -31,11 +35,11 @@ const createUser = async (name: string, hashedPassword: string) => {
   const user = await executeSQLQuery(query, params);
 
   // automatically create user profile
-  const query2 = `INSERT INTO "UserProfile" (fullname, "userId") VALUES ($1, $2) RETURNING *`;
-  const params2 = [user[0].name, user[0].id];
+  const query2 = `INSERT INTO "UserProfile" (fullname, "userId", email) VALUES ($1, $2, $3) RETURNING *`;
+  const params2 = [user[0].name, user[0].id, email];
   const profile = await executeSQLQuery(query2, params2);
 
-  return { user, profile };
+  return { user: user[0], profile: profile[0] };
 };
 
 export default {

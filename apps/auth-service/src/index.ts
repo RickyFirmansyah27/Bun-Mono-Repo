@@ -1,4 +1,10 @@
-import { DBConnection, Logger, PORT_SERVICE, rabbitMqConnection } from '@bun/utils';
+import {
+  DBConnection,
+  Logger,
+  PORT_SERVICE,
+  rabbitMqConnection,
+  listenQueue,
+} from '@bun/utils';
 import { createServer, IncomingMessage, ServerResponse } from 'http';
 import { parse } from 'url';
 import routes from './routes';

@@ -3,6 +3,7 @@ import services from '../services';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { BaseResponse, Logger } from '../helper';
+import { attemptSend } from '@bun/utils';
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
@@ -38,7 +39,7 @@ const Register = async (
         throw new Error('Invalid content type. Use application/json');
       }
       const parsedData = JSON.parse(body); // Parse JSON
-      validateBody(parsedData, ['username', 'password']);
+      validateBody(parsedData, ['username', 'password', 'email']);
 
       // Hash password
       const hash = crypto.createHash('sha256');
@@ -46,12 +47,29 @@ const Register = async (
       const hashedPassword = hash.digest('hex');
 
       // Create user
-      const user = await services.createUser(
-        parsedData.username,
-        hashedPassword
-      );
+      // const user = await services.createUser(
+      //   parsedData.username,
+      //   parsedData.email,
+      //   hashedPassword
+      // );
+      // Send email
+      const message = {
+        request: 'sendEmail',
+        params: {
+          email: 'email@email.com',
+          subject: 'Registration success',
+          message: 'You have successfully registered',
+        },
+      };
+      attemptSend(message, 'email-nofication', (err, result) => {
+        if (err) {
+          Logger.error('Error sending email:', err);
+          return;
+        }
+        Logger.info('Email sent:', result);
+      });
       res.writeHead(201, { 'Content-Type': 'application/json' });
-      BaseResponse(res, 'User created', 'success', user);
+      BaseResponse(res, 'User created', 'success', { msg: 'hello' });
       // res.end(JSON.stringify(user));
     } catch (error) {
       Logger.error('Error:', error);
