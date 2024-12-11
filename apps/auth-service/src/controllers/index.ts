@@ -61,7 +61,7 @@ const Register = async (
           message: 'You have successfully registered',
         },
       };
-      attemptSend(message, 'email-nofication', (err) => {
+      attemptSend(message, 'USER_REGISTRATION', (err) => {
         if (err) {
           Logger.error('Error sending email:', err);
           return;
