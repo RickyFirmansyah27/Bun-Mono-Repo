@@ -27,30 +27,6 @@ interface Message {
   };
 }
 
-export const rabbitMqConnection = (): Promise<amqp.Connection> => {
-    return new Promise((resolve, reject) => {
-      connectRabbitmq((conn, err) => {
-        if (err) {
-          Logger.error('SCHEDULER', 'rabbitMqConnection', 'Error connecting to RabbitMQ', { error: err.message, stack: err.stack });
-          reject(err);
-          return;
-        }
-  
-        if (!conn) {
-          const error = new Error('No connection established');
-          Logger.error('SCHEDULER', 'rabbitMqConnection', 'No RabbitMQ connection', { error: error.message });
-          reject(error);
-          return;
-        }
-  
-        Logger.info(`${contextLogger} | RabbitMQ connection successfully`);
-        resolve(conn);
-      });
-    });
-  };
-
-
-
 export const connectRabbitmq = (main: (conn: amqp.Connection | null, err?: Error) => void): void => {
   if (!RABBITMQ_URL) {
     main(null, new Error('RABBITMQ_URL is not defined'));
@@ -65,16 +41,19 @@ export const connectRabbitmq = (main: (conn: amqp.Connection | null, err?: Error
     });
 };
 
-export const createConnection = (): Promise<amqp.Connection> => {
+export const rabbitMqConnection = (): Promise<amqp.Connection> => {
   return new Promise((resolve, reject) => {
     connectRabbitmq((conn, err) => {
       if (err) {
+        Logger.error('SCHEDULER', 'rabbitMqConnection', 'Error connecting to RabbitMQ', { error: err.message, stack: err.stack });
         reject(err);
         return;
       }
 
       if (!conn) {
-        reject(new Error('No connection established'));
+        const error = new Error('No connection established');
+        Logger.error('SCHEDULER', 'rabbitMqConnection', 'No RabbitMQ connection', { error: error.message });
+        reject(error);
         return;
       }
       
@@ -82,10 +61,10 @@ export const createConnection = (): Promise<amqp.Connection> => {
         try {
           connection = null;
           Logger.info('SCHEDULER', 'RabbitMQ Connection', 'close', { message: 'Closing Connection and Recreating conection' });
-          if (!connection) await createConnection();
+          if (!connection) await rabbitMqConnection();
         } catch (err) {
           Logger.info('SCHEDULER', 'RabbitMQ Connection', 'close', { err });
-          await createConnection();
+          await rabbitMqConnection();
         }
       });
 
@@ -93,6 +72,7 @@ export const createConnection = (): Promise<amqp.Connection> => {
         Logger.info('SCHEDULER', 'RabbitMQ Connection', 'eror', err);
       });
 
+      Logger.info(`${contextLogger} | RabbitMQ connection successfully`);
       connection = conn;
       resolve(conn);
     });

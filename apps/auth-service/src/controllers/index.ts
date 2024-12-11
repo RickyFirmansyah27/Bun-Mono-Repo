@@ -61,12 +61,12 @@ const Register = async (
           message: 'You have successfully registered',
         },
       };
-      attemptSend(message, 'email-nofication', (err, result) => {
+      attemptSend(message, 'email-nofication', (err) => {
         if (err) {
           Logger.error('Error sending email:', err);
           return;
         }
-        Logger.info('Email sent:', result);
+        Logger.info('Send email successfully');
       });
       res.writeHead(201, { 'Content-Type': 'application/json' });
       BaseResponse(res, 'User created', 'success', { msg: 'hello' });
