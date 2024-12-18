@@ -52,30 +52,25 @@ const Register = async (
       //   parsedData.email,
       //   hashedPassword
       // );
+
       // Send email
-      const message = {
-        request: 'sendEmail',
-        params: {
-          email: 'email@email.com',
-          subject: 'Registration success',
-          message: 'You have successfully registered',
-        },
+      const payload = {
+        email: 'email@email.com',
+        subject: 'Registration success',
+        message: 'You have successfully registered',
       };
-      attemptSend(message, 'USER_REGISTRATION', (err) => {
+      attemptSend(payload, 'USER_REGISTRATION', (err) => {
         if (err) {
           Logger.error('Error sending email:', err);
           return;
         }
         Logger.info('Send email successfully');
       });
-      res.writeHead(201, { 'Content-Type': 'application/json' });
+
       BaseResponse(res, 'User created', 'success', { msg: 'hello' });
-      // res.end(JSON.stringify(user));
     } catch (error) {
       Logger.error('Error:', error);
-      res.writeHead(400, { 'Content-Type': 'application/json' });
       BaseResponse(res, (error as Error).message, 'badRequest', null);
-      // res.end(JSON.stringify({ error: (error as Error).message }));
     }
   });
 };
@@ -125,12 +120,10 @@ const Login = async (
         BaseResponse(res, 'Login success', 'success', result);
       } catch (error) {
         Logger.error('Error:', error);
-        res.writeHead(400, { 'Content-Type': 'application/json' });
         BaseResponse(res, (error as Error).message, 'badRequest', null);
       }
     });
   } catch (error) {
-    res.writeHead(400, { 'Content-Type': 'application/json' });
     BaseResponse(res, (error as Error).message, 'badRequest', null);
   }
 };
@@ -151,7 +144,6 @@ const Protect = (req: IncomingMessage, res: ServerResponse): void => {
     // res.end('Protected route accessed!');
   } catch (error) {
     Logger.error('Error:', error);
-    res.writeHead(400, { 'Content-Type': 'application/json' });
     BaseResponse(res, (error as Error).message, 'badRequest', null);
   }
 };

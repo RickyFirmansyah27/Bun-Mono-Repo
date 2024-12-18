@@ -20,13 +20,6 @@ const rabbitmqConfig = {
     connectRetryInterval: 100
   };
 
-interface Message {
-  request: any;
-  params?: {
-    message: any;
-  };
-}
-
 export const connectRabbitmq = (main: (conn: amqp.Connection | null, err?: Error) => void): void => {
   if (!RABBITMQ_URL) {
     main(null, new Error('RABBITMQ_URL is not defined'));
@@ -83,7 +76,7 @@ export const sendToQueue = (
   conn: amqp.Connection, 
   queueName: string, 
   exchangeName: string, 
-  message: Message, 
+  message: Object, 
   callback: () => void
 ): void => {
   conn.createConfirmChannel()
@@ -95,7 +88,7 @@ export const sendToQueue = (
       ch.publish(
         exchangeName,
         queueName,
-        Buffer.from(JSON.stringify({ request: message.request, params: params }))
+        Buffer.from(JSON.stringify({ request: message, params: params }))
       );
       callback();
     })
@@ -108,7 +101,7 @@ export const sendToQueue = (
 };
 
 export const attemptSend = (
-  message: Message, 
+  message: Object, 
   queueName: string, 
   callback: (err: Error | null, result?: string) => void
 ): void => {
