@@ -1,0 +1,325 @@
+version: '3.8'
+
+services:
+  auth-service:
+    image: ghcr.io/rickyfirmansyah27/auth-service:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./apps/auth-service/Dockerfile
+    container_name: auth-service
+    ports:
+      - "8100:8100"
+    environment:
+      - PORT=8100
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=myapp
+      - DB_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+      - JWT_EXPIRED=1d
+      - JWT_ISSUER=bun-service
+      - JWT_CLIENT=bun-client
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "curl", "-f", "http://localhost:8100/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  koa-service:
+    image: ghcr.io/rickyfirmansyah27/koa-service:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./apps/koa-service/Dockerfile
+    container_name: koa-service
+    ports:
+      - "8005:8005"
+    environment:
+      - PORT=8005
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=myapp
+      - DB_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "curl", "-f", "http://localhost:8005/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  fastify-service:
+    image: ghcr.io/rickyfirmansyah27/fastify-service:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./apps/fastify-service/Dockerfile
+    container_name: fastify-service
+    ports:
+      - "8004:8004"
+    environment:
+      - PORT=8004
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=myapp
+      - DB_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "curl", "-f", "http://localhost:8004/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  elysia-service:
+    image: ghcr.io/rickyfirmansyah27/elysia-service:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./apps/elysia-service/Dockerfile
+    container_name: elysia-service
+    ports:
+      - "8003:8003"
+    environment:
+      - PORT=8003
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=myapp
+      - DB_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "curl", "-f", "http://localhost:8003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+  
+  hono-service:
+    image: ghcr.io/rickyfirmansyah27/hono-service:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./apps/hono-service/Dockerfile
+    container_name: hono-service
+    ports:
+      - "8002:8002"
+    environment:
+      - PORT=8002
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=myapp
+      - DB_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "curl", "-f", "http://localhost:8002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  express-service:
+    image: ghcr.io/rickyfirmansyah27/express-service:latest
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: ./apps/express-service/Dockerfile
+    container_name: express-service
+    ports:
+      - "8001:8001"
+    environment:
+      - PORT=8001
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=myapp
+      - DB_SSL=false
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "bun", "run", "curl", "-f", "http://localhost:8001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  postgres:
+    image: postgres:15-alpine
+    restart: unless-stopped
+    container_name: myapp-db
+    shm_size: 256MB
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: myapp
+      PGDATA: /var/lib/postgresql/data/pgdata
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d myapp"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    ports:
+      - "6432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - bun-network
+    command: ["postgres", "-c", "max_connections=100", "-c", "shared_buffers=256MB"]
+
+  migrate:
+    image: ghcr.io/rickyfirmansyah27/db-migrate:latest
+    platform: linux/amd64
+    build:
+      context: ./apps/db-migration
+      dockerfile: Dockerfile
+    networks:
+      - bun-network
+    depends_on:
+      postgres:
+        condition: service_healthy
+    links:
+      - postgres
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/myapp?sslmode=disable
+
+  redis:
+    image: redis:7-alpine
+    container_name: myapp-redis
+    restart: unless-stopped
+    ports:
+      - "7379:6379"
+    networks:
+      - bun-network
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis_data:/data
+
+  kong:
+    image: ghcr.io/rickyfirmansyah27/kong-bun-service:latest
+    build:
+      context: apps/kong-gateway-service
+      dockerfile: Dockerfile
+    volumes:
+      - ./apps/kong-gateway-service/config:/etc/kong/declarative
+    environment:
+      # Use the config defined in config/kong.yml
+      KONG_DATABASE: "off"
+      KONG_DECLARATIVE_CONFIG: /etc/kong/declarative/kong.yml
+      # Show all output in the terminal when running with Docker
+      KONG_ADMIN_ACCESS_LOG: /dev/stdout
+      KONG_ADMIN_ERROR_LOG: /dev/stderr
+      KONG_PROXY_ACCESS_LOG: /dev/stdout
+      KONG_PROXY_ERROR_LOG: /dev/stderr
+      # Enable the JS plugin server
+      KONG_PLUGINSERVER_NAMES: js
+      KONG_PLUGINSERVER_JS_SOCKET: /usr/local/kong/js_pluginserver.sock
+      KONG_PLUGINSERVER_JS_START_CMD: /usr/local/bin/kong-js-pluginserver -v --plugins-directory /usr/local/kong/js-plugins
+      KONG_PLUGINSERVER_JS_QUERY_CMD: /usr/local/bin/kong-js-pluginserver --plugins-directory /usr/local/kong/js-plugins --dump-all-plugins
+      KONG_LOG_LEVEL: debug
+      SECRET: "qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u"
+      ISSUER: "bun-service"
+      # Allow plugins to be used. The plugin name is your JS file name e.g. hello.js
+      KONG_PLUGINS: bundled,auth,cors
+      KONG_RESPONSE_TRANSFORMER_REMOVE_HEADERS: false
+    ports:
+      - "8000:8000/tcp"
+    healthcheck:
+      test: [ "CMD", "kong", "health" ]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+    restart: on-failure
+    networks:
+      - bun-network
+
+volumes:
+  postgres_data:
+    name: myapp_postgres_data
+  redis_data:
+    name: myapp_redis_data
+
+networks:
+  bun-network:
+    name: myapp_network
