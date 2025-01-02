@@ -12,18 +12,15 @@ services:
       - "8100:8100"
     environment:
       - PORT=8100
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=myapp
-      - DB_SSL=false
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+      - RABBITMQ_URL=amqps://gxylgqlb:OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI@armadillo.rmq.cloudamqp.com/gxylgqlb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
       - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
       - JWT_EXPIRED=1d
       - JWT_ISSUER=bun-service
       - JWT_CLIENT=bun-client
+      - LOGTAIL_API_KEY=qLeeazh2QzV47U2f7EnoMhT8
     logging:
       driver: json-file
       options:
@@ -55,14 +52,15 @@ services:
       - "8005:8005"
     environment:
       - PORT=8005
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=myapp
-      - DB_SSL=false
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+      - RABBITMQ_URL=amqps://gxylgqlb:OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI@armadillo.rmq.cloudamqp.com/gxylgqlb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+      - JWT_EXPIRED=1d
+      - JWT_ISSUER=bun-service
+      - JWT_CLIENT=bun-client
+      - LOGTAIL_API_KEY=qLeeazh2QzV47U2f7EnoMhT8
     logging:
       driver: json-file
       options:
@@ -94,14 +92,15 @@ services:
       - "8004:8004"
     environment:
       - PORT=8004
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=myapp
-      - DB_SSL=false
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+      - RABBITMQ_URL=amqps://gxylgqlb:OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI@armadillo.rmq.cloudamqp.com/gxylgqlb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+      - JWT_EXPIRED=1d
+      - JWT_ISSUER=bun-service
+      - JWT_CLIENT=bun-client
+      - LOGTAIL_API_KEY=qLeeazh2QzV47U2f7EnoMhT8
     networks:
       - bun-network
     depends_on:
@@ -128,14 +127,15 @@ services:
       - "8003:8003"
     environment:
       - PORT=8003
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=myapp
-      - DB_SSL=false
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+      - RABBITMQ_URL=amqps://gxylgqlb:OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI@armadillo.rmq.cloudamqp.com/gxylgqlb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+      - JWT_EXPIRED=1d
+      - JWT_ISSUER=bun-service
+      - JWT_CLIENT=bun-client
+      - LOGTAIL_API_KEY=qLeeazh2QzV47U2f7EnoMhT8
     networks:
       - bun-network
     depends_on:
@@ -162,14 +162,15 @@ services:
       - "8002:8002"
     environment:
       - PORT=8002
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=myapp
-      - DB_SSL=false
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+      - RABBITMQ_URL=amqps://gxylgqlb:OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI@armadillo.rmq.cloudamqp.com/gxylgqlb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+      - JWT_EXPIRED=1d
+      - JWT_ISSUER=bun-service
+      - JWT_CLIENT=bun-client
+      - LOGTAIL_API_KEY=qLeeazh2QzV47U2f7EnoMhT8
     networks:
       - bun-network
     depends_on:
@@ -196,14 +197,15 @@ services:
       - "8001:8001"
     environment:
       - PORT=8001
-      - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=myapp
-      - DB_SSL=false
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+      - RABBITMQ_URL=amqps://gxylgqlb:OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI@armadillo.rmq.cloudamqp.com/gxylgqlb
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - JWT_SECRET=qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+      - JWT_EXPIRED=1d
+      - JWT_ISSUER=bun-service
+      - JWT_CLIENT=bun-client
+      - LOGTAIL_API_KEY=qLeeazh2QzV47U2f7EnoMhT8
     networks:
       - bun-network
     depends_on:
@@ -257,7 +259,21 @@ services:
     links:
       - postgres
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/myapp?sslmode=disable
+      - DATABASE_URL=postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
+
+  rabbitmq:
+    image: rabbitmq:management
+    container_name: myapp-rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=gxylgqlb
+      - RABBITMQ_DEFAULT_PASS=OWeSHYsGOtgehoHdMHBwkbnvUOHLZQCI
+    ports:
+      - "25672:15672"
+      - "6672:5672"
+    networks:
+      - bun-network
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
 
   redis:
     image: redis:7-alpine
@@ -319,6 +335,8 @@ volumes:
     name: myapp_postgres_data
   redis_data:
     name: myapp_redis_data
+  rabbitmq_data:
+    name: myapp_rabbitmq_data
 
 networks:
   bun-network:
