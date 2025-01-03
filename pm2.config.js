@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: "auth-service",
-      script: "./dist/index.js",
+      script: "bun run ./dist/index.js",
       cwd: "./apps/auth-service",
       instances: 1,
       exec_mode: "fork",
@@ -15,7 +15,7 @@ module.exports = {
     },
     {
       name: "hono-service",
-      script: "./dist/index.js",
+      script: "bun run ./dist/index.js",
       cwd: "./apps/hono-service",
       instances: 1,
       exec_mode: "fork",
@@ -28,7 +28,7 @@ module.exports = {
     },
     {
       name: "elysia-service",
-      script: "./dist/index.js",
+      script: "bun run ./dist/index.js",
       cwd: "./apps/elysia-service",
       instances: 1,
       exec_mode: "fork",
@@ -41,7 +41,7 @@ module.exports = {
     },
     {
       name: "express-service",
-      script: "./dist/index.js",
+      script: "bun run ./dist/index.js",
       cwd: "./apps/express-service",
       instances: 1,
       exec_mode: "fork",
@@ -54,7 +54,7 @@ module.exports = {
     },
     {
       name: "fastify-service",
-      script: "./dist/index.js",
+      script: "bun run ./dist/index.js",
       cwd: "./apps/fastify-service",
       instances: 1,
       exec_mode: "fork",
@@ -67,7 +67,7 @@ module.exports = {
     },
     {
       name: "koa-service",
-      script: "./dist/index.js",
+      script: "bun run ./dist/index.js",
       cwd: "./apps/koa-service",
       instances: 1,
       exec_mode: "fork",
