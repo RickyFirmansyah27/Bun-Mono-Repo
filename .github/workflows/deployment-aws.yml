@@ -49,7 +49,7 @@ jobs:
         CHANGED_DIRS=$(git diff --name-only HEAD~1 HEAD | awk -F/ '{print $2}' | sort -u)
 
         for DIR in $CHANGED_DIRS; do
-          SERVICE_NAME="${DIR}-service"
+          SERVICE_NAME="${DIR}"
           if pm2 describe $SERVICE_NAME > /dev/null; then
             echo "Reloading PM2 service for $SERVICE_NAME..."
             pm2 reload $SERVICE_NAME --update-env
