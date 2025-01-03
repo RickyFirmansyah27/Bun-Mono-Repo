@@ -22,8 +22,8 @@ export const BaseResponse = (
   resMessage: string,
   type: ResponseType,
   result: any = null,
-): string => {
-  let response = res.response;
+): object => {
+  let response = res.response as object;
   const status = StatusCodes[type] || 200;
 
   switch (type) {
@@ -47,5 +47,5 @@ export const BaseResponse = (
   // Set the response status code
   res.set.status = status;
 
-  return JSON.stringify(response);
+  return response;
 };
