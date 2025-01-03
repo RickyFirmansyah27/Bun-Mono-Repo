@@ -19,12 +19,40 @@ jobs:
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
 
-    - name: Deploy to AWS via SSH
+    - name: Pull and Build
       env:
         INSTANCE_PUBLIC_IP: ${{ secrets.INSTANCE_PUBLIC_IP }}
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@$INSTANCE_PUBLIC_IP << 'EOF'
         cd ~/Bun-Mono-Repo
         git pull origin main
-        pm2 reload all --update-env
+
+        CHANGED_DIRS=$(git diff --name-only HEAD~1 HEAD | awk -F/ '{print $2}' | sort -u)
+
+        for DIR in $CHANGED_DIRS; do
+          if [[ -d "./apps/$DIR" ]]; then
+            echo "Building $DIR..."
+            cd ./apps/$DIR
+            bun run build
+            cd - > /dev/null
+          fi
+        done
+        EOF
+
+    - name: Reload updated PM2
+      env:
+        INSTANCE_PUBLIC_IP: ${{ secrets.INSTANCE_PUBLIC_IP }}
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@$INSTANCE_PUBLIC_IP << 'EOF'
+        cd ~/Bun-Mono-Repo
+
+        CHANGED_DIRS=$(git diff --name-only HEAD~1 HEAD | awk -F/ '{print $2}' | sort -u)
+
+        for DIR in $CHANGED_DIRS; do
+          SERVICE_NAME="${DIR}-service"
+          if pm2 describe $SERVICE_NAME > /dev/null; then
+            echo "Reloading PM2 service for $SERVICE_NAME..."
+            pm2 reload $SERVICE_NAME --update-env
+          fi
+        done
         EOF
