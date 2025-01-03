@@ -1,0 +1,30 @@
+name: Deploy to AWS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+
+    - name: Deploy to AWS via SSH
+      env:
+        INSTANCE_PUBLIC_IP: ${{ secrets.INSTANCE_PUBLIC_IP }}
+      run: |
+        ssh -o StrictHostKeyChecking=no ubuntu@$INSTANCE_PUBLIC_IP << 'EOF'
+        cd ~/Bun-Mono-Repo
+        git pull origin main
+        pm2 reload all --update-env
+        EOF
