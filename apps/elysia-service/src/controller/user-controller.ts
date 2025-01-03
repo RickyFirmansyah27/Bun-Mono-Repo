@@ -7,10 +7,29 @@ interface User {
     id: number;
     name: string;
     email: string;
+    age: number;
 }
 
-// Sample in-memory users array to store users
-const users: User[] = [];
+const users: User[] = [
+    {
+        id: 1,
+        name: "Alice Johnson",
+        email: "alice.johnson@example.com",
+        age: 28,
+    },
+    {
+        id: 2,
+        name: "Bob Smith",
+        email: "bob.smith@example.com",
+        age: 35,
+    },
+    {
+        id: 3,
+        name: "Charlie Brown",
+        email: "charlie.brown@example.com",
+        age: 22,
+    },
+];
 
 export class UserController {
     static async getUser(ctx: Context) {
