@@ -16,8 +16,10 @@ export const getUser = async (req: Request, res: Response): Promise<void> => {
     try {
         Logger.info(`${contextLogger} | getUser`);
         const users = await userService.getAllUsers();
-        return BaseResponse(res, 'Users retrieved successfully', 'success', { data: users });
+        Logger.info(`${contextLogger} | users: ${JSON.stringify(users)}`);
+        return BaseResponse(res, 'Users retrieved successfully', 'success',  users);
     } catch (error) {
+        Logger.error(`${contextLogger} | error: ${(error as Error).message}`);
         return BaseResponse(res, 'error', 'internalServerError', null);
     }
 };
@@ -41,9 +43,9 @@ export const getUserDetail = async (req: Request, res: Response): Promise<void> 
             return BaseResponse(res, 'User not found', 'notFound', null);
         }
 
-        return BaseResponse(res, 'Users retrieved successfully', 'success', { data: users });
+        return BaseResponse(res, 'Users retrieved successfully', 'success', users);
     } catch (error) {
-        Logger.error(`${contextLogger} | getUser | Error: ${error}`);
-        return BaseResponse(res, 'Internal server error', 'internalServerError', null);
+        Logger.error(`${contextLogger} | getUser | error: ${(error as Error).message}`);
+        return BaseResponse(res, 'error', 'internalServerError', null);
     }
 };
