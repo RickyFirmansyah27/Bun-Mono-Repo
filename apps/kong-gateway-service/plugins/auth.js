@@ -1,10 +1,12 @@
 "use strict"
 
-const jwt = require("jsonwebtoken");
-const { isEmpty } = require("lodash");
-const { config } = require('dotenv');
-config({ path: '../kong.env' });
+const dotenv = require('dotenv');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+const { isEmpty } = require('lodash');
 
+const envPath = path.resolve(__dirname, '../.env');
+dotenv.config({ path: envPath });
 
 const BaseResponse = {
     ErrorResponse: (kong, httpStatus, message) => {
@@ -64,19 +66,19 @@ module.exports = {
         {
             SECRET: {
                 type: "string",
-                default: process.env.SECRET,
+                default: process.env.JWT_SECRET,
             },
         },
         {
             ISSUER: {
                 type: "string",
-                default: process.env.ISSUER,
+                default: process.env.JWT_ISSUER,
             },
         },
         {
             AUDIENCE: {
                 type: "string",
-                default: process.env.AUDIENCE,
+                default: process.env.JWT_CLIENT,
             },
         },
     ],

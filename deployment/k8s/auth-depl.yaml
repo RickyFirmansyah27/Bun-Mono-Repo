@@ -14,10 +14,17 @@ spec:
     spec:
       containers:
         - name: auth-service
-          image: ghcr.io/rickyfirmansyah27/auth-service:20250104051652
+          image: ghcr.io/rickyfirmansyah27/auth-service:20250104063447
+          imagePullPolicy: Always
           env:
             - name: JWT_SECRET
               value: qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
+            - name: JWT_EXPIRED
+              value: 1h
+            - name: JWT_ISSUER
+              value: bun-service
+            - name: JWT_CLIENT
+              value: bun-client
             - name: PORT
               value: '8100'
             - name: DATABASE_URL
