@@ -17,6 +17,13 @@ spec:
           image: ghcr.io/rickyfirmansyah27/kong-bun-service:latest
           ports:
             - containerPort: 8000
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
           env:
             - name: KONG_DATABASE
               value: "off"

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bun-elysia-api
-          image: ghcr.io/rickyfirmansyah27/elysia-service:20241127121445
+          image: ghcr.io/rickyfirmansyah27/elysia-service:20250103100250
           env:
             - name: JWT_SECRET
               value: qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u

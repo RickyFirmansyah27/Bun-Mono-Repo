@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bun-auth-api
-          image: ghcr.io/rickyfirmansyah27/auth-service:20241127121451
+          image: ghcr.io/rickyfirmansyah27/auth-service:20241218104753
           env:
             - name: JWT_SECRET
               value: qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
