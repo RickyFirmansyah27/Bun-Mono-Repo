@@ -14,16 +14,9 @@ spec:
     spec:
       containers:
         - name: kong-controller-bun
-          image: ghcr.io/rickyfirmansyah27/kong-bun-service:latest
+          image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250104071128
           ports:
             - containerPort: 8000
-          resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
-            requests:
-              memory: "256Mi"
-              cpu: "250m"
           env:
             - name: KONG_DATABASE
               value: "off"
