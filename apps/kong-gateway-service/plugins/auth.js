@@ -57,24 +57,22 @@ module.exports = {
   Plugin: AuthPlugin,
   Version: "0.1.0",
   name: "auth",
-  Schema: [
-    {
+  Schema: {
+    type: "object",
+    properties: {
       SECRET: {
         type: "string",
         default: process.env.SECRET,
       },
-    },
-    {
       ISSUER: {
         type: "string",
         default: process.env.ISSUER,
       },
-    },
-    {
       AUDIENCE: {
         type: "string",
         default: process.env.AUDIENCE,
       },
     },
-  ],
+    required: ["SECRET", "ISSUER", "AUDIENCE"],
+  },  
 };
