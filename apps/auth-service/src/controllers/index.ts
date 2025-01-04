@@ -107,9 +107,15 @@ const Login = async (
         if (user[0].password !== hashedPassword) {
           throw new Error('Invalid password');
         }
+
+        const expiresIn = jwtExpired || '1h';
+        if (isNaN(Number(expiresIn)) && !/^\d+[smhd]?$/.test(expiresIn)) {
+          throw new Error('Invalid expiration time');
+        }
+
         const payload = { username: user[0].name, id: user[0].id };
         const token = jwt.sign(payload, secret as string, {
-          expiresIn: jwtExpired,
+          expiresIn,
           issuer: jwtIssuer,
           audience: jwtAudience,
         });
