@@ -113,11 +113,19 @@ const Login = async (
           throw new Error('Invalid expiration time');
         }
 
+        if (typeof jwtIssuer !== 'string' || jwtIssuer === undefined) {
+          throw new Error('Invalid jwtIssuer: must be a string or undefined');
+        }
+        
+        if (typeof jwtAudience !== 'string' || jwtAudience === undefined) {
+          throw new Error('Invalid jwtAudience: must be a string or undefined');
+        }
+
         const payload = { username: user[0].name, id: user[0].id };
         const token = jwt.sign(payload, secret as string, {
           expiresIn,
-          issuer: jwtIssuer || 'bun-service',
-          audience: process.env.JWT_CLIENT as string,
+          issuer: jwtIssuer as string,
+          audience: jwtAudience as string,
         });
 
         const result = {
