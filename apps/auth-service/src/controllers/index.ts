@@ -117,7 +117,7 @@ const Login = async (
         const token = jwt.sign(payload, secret as string, {
           expiresIn,
           issuer: jwtIssuer || 'bun-service',
-          audience: jwtAudience,
+          audience: process.env.JWT_CLIENT as string,
         });
 
         const result = {
