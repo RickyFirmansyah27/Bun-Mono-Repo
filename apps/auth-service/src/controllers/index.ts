@@ -110,14 +110,17 @@ const Login = async (
 
         const expiresIn = jwtExpired || '1h';
         if (isNaN(Number(expiresIn)) && !/^\d+[smhd]?$/.test(expiresIn)) {
+          Logger.info('expiresIn:', expiresIn);
           throw new Error('Invalid expiration time');
         }
 
         if (typeof jwtIssuer !== 'string' || jwtIssuer === undefined) {
+          Logger.info('jwtIssuer:', jwtIssuer);
           throw new Error('Invalid jwtIssuer: must be a string or undefined');
         }
         
         if (typeof jwtAudience !== 'string' || jwtAudience === undefined) {
+          Logger.info('jwtAudience:', jwtAudience);
           throw new Error('Invalid jwtAudience: must be a string or undefined');
         }
 
