@@ -7,8 +7,8 @@ import { attemptSend, jwtConfig } from '@bun/utils';
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
-const jwtIssuer = process.env.JWT_ISSUER;
-const jwtAudience = process.env.JWT_CLIENT;
+const jwtIssuer = process.env.JWT_ISSUER as string;
+const jwtAudience = process.env.JWT_CLIENT as string;
 
 
 // Helper untuk validasi input
