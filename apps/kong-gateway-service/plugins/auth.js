@@ -8,8 +8,6 @@ const { isEmpty } = require("lodash");
 const envPath = path.resolve(__dirname, "../.env");
 dotenv.config({ path: envPath });
 
-console.log(process.env.JWT_SECRET);
-
 const BaseResponse = {
   ErrorResponse: (kong, httpStatus, message) => {
     return kong.response.exit(httpStatus || 401, {
@@ -39,7 +37,7 @@ class AuthPlugin {
 
       // Check if Authorization header is present
       if (!isEmpty(requestHeaders.authorization)) {
-        const token = requestHeaders.authorization[0].split(" ")[1];
+        const token = requestHeaders.authorization.split(" ")[1];
 
         // Log token for debugging (avoid in production for security reasons)
         kong.log.info("Authorization Token:", token);
@@ -93,24 +91,19 @@ module.exports = {
   Plugin: AuthPlugin,
   Version: "0.1.0",
   name: "auth",
-  Schema: [
-    {
-      SECRET: {
-        type: "string",
-        default: process.env.JWT_SECRET,
+  Schema: {
+    name: "auth",
+    fields: [
+      {
+        config: {
+          type: "record",
+          fields: [
+            { name: "SECRET", type: "string", default: process.env.JWT_SECRET },
+            { name: "ISSUER", type: "string", default: process.env.JWT_ISSUER },
+            { name: "AUDIENCE", type: "string", default: process.env.JWT_CLIENT },
+          ],
+        },
       },
-    },
-    {
-      ISSUER: {
-        type: "string",
-        default: process.env.JWT_ISSUER,
-      },
-    },
-    {
-      AUDIENCE: {
-        type: "string",
-        default: process.env.JWT_CLIENT,
-      },
-    },
-  ],
+    ],
+  },
 };
