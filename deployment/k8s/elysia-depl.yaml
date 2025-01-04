@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-elysia-api
+  name: elysia-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-elysia-api
+      app: elysia-service
   template:
     metadata:
       labels:
-        app: bun-elysia-api
+        app: elysia-service
     spec:
       containers:
-        - name: bun-elysia-api
+        - name: elysia-service
           image: ghcr.io/rickyfirmansyah27/elysia-service:20250103100250
           env:
             - name: JWT_SECRET
@@ -37,10 +37,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-elysia-api
+  name: elysia-service
 spec:
   selector:
-    app: bun-elysia-api
+    app: elysia-service
   ports:
     - port: 8003
       targetPort: 8003

@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-koa-api
+  name: koa-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-koa-api
+      app: koa-service
   template:
     metadata:
       labels:
-        app: bun-koa-api
+        app: koa-service
     spec:
       containers:
-        - name: bun-koa-api
+        - name: koa-service
           image: ghcr.io/rickyfirmansyah27/koa-service:20241127121459
           env:
             - name: JWT_SECRET
@@ -37,10 +37,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-koa-api
+  name: koa-service
 spec:
   selector:
-    app: bun-koa-api
+    app: koa-service
   ports:
     - port: 8005
       targetPort: 8005

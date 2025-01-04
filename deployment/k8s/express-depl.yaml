@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-express-api
+  name: express-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-express-api
+      app: express-service
   template:
     metadata:
       labels:
-        app: bun-express-api
+        app: express-service
     spec:
       containers:
-        - name: bun-express-api
+        - name: express-service
           image: ghcr.io/rickyfirmansyah27/express-service:20250104031627
           env:
             - name: JWT_SECRET
@@ -37,10 +37,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-express-api
+  name: express-service
 spec:
   selector:
-    app: bun-express-api
+    app: express-service
   ports:
     - port: 8001
       targetPort: 8001

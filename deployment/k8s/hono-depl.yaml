@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-hono-api
+  name: hono-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-hono-api
+      app: hono-service
   template:
     metadata:
       labels:
-        app: bun-hono-api
+        app: hono-service
     spec:
       containers:
-        - name: bun-hono-api
+        - name: hono-service
           image: ghcr.io/rickyfirmansyah27/hono-service:20250104033247
           env:
             - name: JWT_SECRET
@@ -37,10 +37,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-hono-api
+  name: hono-service
 spec:
   selector:
-    app: bun-hono-api
+    app: hono-service
   ports:
     - port: 8002
       targetPort: 8002

@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bun-fastify-api
+  name: fastify-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bun-fastify-api
+      app: fastify-service
   template:
     metadata:
       labels:
-        app: bun-fastify-api
+        app: fastify-service
     spec:
       containers:
-        - name: bun-fastify-api
+        - name: fastify-service
           image: ghcr.io/rickyfirmansyah27/fastify-service:20250104031633
           env:
             - name: JWT_SECRET
@@ -37,10 +37,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bun-fastify-api
+  name: fastify-service
 spec:
   selector:
-    app: bun-fastify-api
+    app: fastify-service
   ports:
     - port: 8004
       targetPort: 8004

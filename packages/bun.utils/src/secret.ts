@@ -1,6 +1,6 @@
 import { config } from 'dotenv';
 
-config({ path: '../secret.env' });
+config({ path: '../.env' });
 
 export const jwtConfig = {
     secret: process.env.JWT_SECRET,
