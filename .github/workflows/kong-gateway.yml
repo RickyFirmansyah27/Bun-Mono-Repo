@@ -31,6 +31,11 @@ jobs:
         run: |
           echo "date=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
+      - name: Debug build context
+        run: |
+          ls -la apps/kong-gateway-service
+          ls -la apps/kong-gateway-service/plugins
+
       - name: Build and push image
         uses: docker/build-push-action@v4
         with:
