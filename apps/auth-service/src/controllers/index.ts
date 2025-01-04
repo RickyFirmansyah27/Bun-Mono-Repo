@@ -141,7 +141,6 @@ const Protect = (req: IncomingMessage, res: ServerResponse): void => {
     });
     Logger.info(`[Token Payload]: ${JSON.stringify(decodedToken)}`);
     BaseResponse(res, 'Protected route accessed!', 'success', decodedToken);
-    // res.end('Protected route accessed!');
   } catch (error) {
     Logger.error('Error:', error);
     BaseResponse(res, (error as Error).message, 'badRequest', null);
