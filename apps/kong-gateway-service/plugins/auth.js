@@ -1,12 +1,7 @@
 "use strict";
 
-const dotenv = require("dotenv");
-const path = require("path");
 const jwt = require("jsonwebtoken");
 const { isEmpty } = require("lodash");
-
-const envPath = path.resolve(__dirname, "../.env");
-dotenv.config({ path: envPath });
 
 const BaseResponse = {
   ErrorResponse: (kong, httpStatus, message) => {
@@ -21,28 +16,14 @@ const BaseResponse = {
 class AuthPlugin {
   constructor(config) {
     this.config = config;
-
-    // Ensure environment variables are set
-    if (!this.config.SECRET || !this.config.ISSUER || !this.config.AUDIENCE) {
-      throw new Error(
-        "JWT_SECRET, JWT_ISSUER, or JWT_CLIENT is not defined in environment variables."
-      );
-    }
   }
 
   async access(kong) {
     try {
       const requestHeaders = await kong.request.getHeaders();
       kong.log.info("Auth Headers:", JSON.stringify({ requestHeaders }));
-
-      // Check if Authorization header is present
       if (!isEmpty(requestHeaders.authorization)) {
-        const token = requestHeaders.authorization.split(" ")[1];
-
-        // Log token for debugging (avoid in production for security reasons)
-        kong.log.info("Authorization Token:", token);
-
-        // Decode the JWT token
+        const token = requestHeaders.authorization[0].split(" ")[1];
         const decoded = jwt.verify(token, this.config.SECRET, {
           algorithms: ["HS256"],
           ignoreExpiration: false,
@@ -50,39 +31,24 @@ class AuthPlugin {
           audience: this.config.AUDIENCE,
         });
 
-        // Check if the decoded token is valid
         if (isEmpty(decoded)) {
-          kong.log.err("Error Auth Plugin:", "Unauthorized - Invalid token");
-          return BaseResponse.ErrorResponse(
-            kong,
-            401,
-            "Unauthorized - Invalid token"
-          );
+          kong.log.err("Error Auth Plugin:", "Unauthorized");
+          return BaseResponse.ErrorResponse(kong, 401, "Unauthorized");
         }
 
         kong.log.info("Decoded:", JSON.stringify({ decoded }));
-
-        // Add decoded token to the request headers user
+        // add decoded token to the request headers user
         kong.service.request.add_header(
           "X-User-Profile",
           JSON.stringify(decoded)
         );
-
         return decoded;
       } else {
-        return BaseResponse.ErrorResponse(
-          kong,
-          401,
-          "Unauthorized - No Authorization header"
-        );
+        return BaseResponse.ErrorResponse(kong, 401, "Unauthorized");
       }
     } catch (error) {
       kong.log.err("Error Auth Plugin:", error.message);
-      return BaseResponse.ErrorResponse(
-        kong,
-        401,
-        `Unauthorized - ${error.message}`
-      );
+      return BaseResponse.ErrorResponse(kong, 401, "Unauthorized");
     }
   }
 }
@@ -91,19 +57,24 @@ module.exports = {
   Plugin: AuthPlugin,
   Version: "0.1.0",
   name: "auth",
-  Schema: {
-    name: "auth",
-    fields: [
-      {
-        config: {
-          type: "record",
-          fields: [
-            { name: "SECRET", type: "string", default: process.env.JWT_SECRET },
-            { name: "ISSUER", type: "string", default: process.env.JWT_ISSUER },
-            { name: "AUDIENCE", type: "string", default: process.env.JWT_CLIENT },
-          ],
-        },
+  Schema: [
+    {
+      SECRET: {
+        type: "string",
+        default: process.env.SECRET,
       },
-    ],
-  },
+    },
+    {
+      ISSUER: {
+        type: "string",
+        default: process.env.ISSUER,
+      },
+    },
+    {
+      AUDIENCE: {
+        type: "string",
+        default: process.env.AUDIENCE,
+      },
+    },
+  ],
 };
