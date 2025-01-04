@@ -1,7 +1,12 @@
 "use strict"
 
-const jwt = require("jsonwebtoken");
-const { isEmpty } = require("lodash");
+const dotenv = require('dotenv');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+const { isEmpty } = require('lodash');
+
+const envPath = path.resolve(__dirname, '../.env');
+dotenv.config({ path: envPath });
 
 const BaseResponse = {
     ErrorResponse: (kong, httpStatus, message) => {
@@ -24,11 +29,11 @@ class AuthPlugin {
             kong.log.info("Auth Headers:", JSON.stringify({ requestHeaders }));
             if (!isEmpty(requestHeaders.authorization)) {
                 const token = requestHeaders.authorization[0].split(" ")[1];
-                const decoded = jwt.verify(token, this.config.secret, {
+                const decoded = jwt.verify(token, this.config.SECRET, {
                     algorithms: ["HS256"],
                     ignoreExpiration: false,
-                    issuer: this.config.issuer,
-                    audience: this.config.audience,
+                    issuer: this.config.ISSUER,
+                    audience: this.config.AUDIENCE,
                 });
 
                 if (isEmpty(decoded)) {
@@ -59,21 +64,22 @@ module.exports = {
     name: "auth",
     Schema: [
         {
-            secret: {
+            SECRET: {
                 type: "string",
-                required: true,
                 default: process.env.SECRET,
             },
-            issuer: {
+        },
+        {
+            ISSUER: {
                 type: "string",
-                required: true,
                 default: process.env.ISSUER,
             },
-            audience: {
+        },
+        {
+            AUDIENCE: {
                 type: "string",
-                required: true,
                 default: process.env.AUDIENCE,
-            }
-        }
+            },
+        },
     ],
 };
