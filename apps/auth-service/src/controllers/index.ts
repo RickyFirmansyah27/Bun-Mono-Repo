@@ -116,7 +116,7 @@ const Login = async (
         const payload = { username: user[0].name, id: user[0].id };
         const token = jwt.sign(payload, secret as string, {
           expiresIn,
-          issuer: jwtIssuer,
+          issuer: jwtIssuer || 'bun-service',
           audience: jwtAudience,
         });
 
