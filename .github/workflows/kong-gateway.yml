@@ -34,7 +34,7 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v4
         with:
-          context: .
+          context: apps/kong-gateway-service
           file: ./apps/kong-gateway-service/Dockerfile
           push: true
           tags: ghcr.io/rickyfirmansyah27/kong-gateway-service:${{ env.date }}
