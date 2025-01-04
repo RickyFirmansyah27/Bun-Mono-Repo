@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kong-controller-bun
-          image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250104102832
+          image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250104104200
           ports:
             - containerPort: 8000
           env:

@@ -25,7 +25,8 @@ services:
           - name: auth
           
   - name: auth-service
-    url: http://auth-service:8100
+    url: http://auth-service.default.svc.cluster.local:8100 # untuk kubernetes
+    # url: http://auth-service:8100
     routes:
       - name: auth-route
         paths:
@@ -34,7 +35,8 @@ services:
         preserve_host: false
 
   - name: express-service
-    url: http://express-service:8001
+    url: http://express-service.default.svc.cluster.local:8001 # untuk kubernetes
+    # url: http://express-service:8001
     plugins:
       - name: auth
     routes:
@@ -45,7 +47,8 @@ services:
         preserve_host: false
   
   - name: hono-service
-    url: http://hono-service:8002
+    url: http://hono-service.default.svc.cluster.local:8002 # untuk kubernetes
+    # url: http://hono-service:8002
     plugins:
       - name: auth
     routes:
@@ -56,7 +59,8 @@ services:
         preserve_host: false
 
   - name: elysia-service
-    url: http://elysia-service:8003
+    url: http://elysia-service.default.svc.cluster.local:8003 # untuk kubernetes
+    # url: http://elysia-service:8003
     plugins:
       - name: auth
     routes:
@@ -67,7 +71,8 @@ services:
         preserve_host: false
 
   - name: fastify-service
-    url: http://fastify-service:8004
+    url: http://fastify-service.default.svc.cluster.local:8004 # untuk kubernetes
+    # url: http://fastify-service:8004
     plugins:
       - name: auth
     routes:
@@ -78,7 +83,8 @@ services:
         preserve_host: false
 
   - name: koa-service
-    url: http://koa-service:8005
+    url: http://koa-service.default.svc.cluster.local:8005 # untuk kubernetes
+    # url: http://koa-service:8005
     plugins:
       - name: auth
     routes:

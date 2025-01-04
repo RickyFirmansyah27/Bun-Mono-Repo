@@ -293,7 +293,7 @@ services:
       - redis_data:/data
 
   kong:
-    image: ghcr.io/rickyfirmansyah27/kong-bun-service:latest
+    image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250104104200
     build:
       context: apps/kong-gateway-service
       dockerfile: Dockerfile
