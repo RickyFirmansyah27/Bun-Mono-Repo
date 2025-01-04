@@ -2,8 +2,8 @@ name: Deploy to AWS
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - 'apps/**' ## trigger based on services directory
 
 jobs:
   deploy:
