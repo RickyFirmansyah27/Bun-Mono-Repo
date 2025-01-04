@@ -1,15 +1,19 @@
+import { config } from 'dotenv';
+import path from 'path';
+const envPath = path.resolve(__dirname, '../../.env');
+config({ path: envPath });
+
 import { IncomingMessage, ServerResponse } from 'http';
 import services from '../services';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { BaseResponse, Logger } from '../helper';
-import { attemptSend, jwtConfig } from '@bun/utils';
+import { attemptSend } from '@bun/utils';
 
 const secret = process.env.JWT_SECRET;
 const jwtExpired = process.env.JWT_EXPIRED;
 const jwtIssuer = process.env.JWT_ISSUER as string;
 const jwtAudience = process.env.JWT_CLIENT as string;
-
 
 // Helper untuk validasi input
 const validateBody = (body: any, requiredFields: string[]) => {
@@ -108,27 +112,17 @@ const Login = async (
           throw new Error('Invalid password');
         }
 
-        const expiresIn = jwtExpired || '1h';
+        const expiresIn = jwtExpired as string;
         if (isNaN(Number(expiresIn)) && !/^\d+[smhd]?$/.test(expiresIn)) {
           Logger.info('expiresIn:', expiresIn);
           throw new Error('Invalid expiration time');
         }
 
-        if (typeof jwtIssuer !== 'string' || jwtIssuer === undefined) {
-          Logger.info('jwtIssuer:', jwtIssuer);
-          throw new Error('Invalid jwtIssuer: must be a string or undefined');
-        }
-        
-        if (typeof jwtAudience !== 'string' || jwtAudience === undefined) {
-          Logger.info('jwtAudience:', jwtAudience);
-          throw new Error('Invalid jwtAudience: must be a string or undefined');
-        }
-
         const payload = { username: user[0].name, id: user[0].id };
         const token = jwt.sign(payload, secret as string, {
           expiresIn,
-          issuer: jwtIssuer as string,
-          audience: jwtAudience as string,
+          issuer: jwtIssuer,
+          audience: jwtAudience,
         });
 
         const result = {
