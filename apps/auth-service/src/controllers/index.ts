@@ -5,10 +5,11 @@ import jwt from 'jsonwebtoken';
 import { BaseResponse, Logger } from '../helper';
 import { attemptSend, jwtConfig } from '@bun/utils';
 
-const secret = jwtConfig.secret;
-const jwtExpired = jwtConfig.expired;
-const jwtIssuer = jwtConfig.issuer;
-const jwtAudience = jwtConfig.audience;
+const secret = process.env.JWT_SECRET;
+const jwtExpired = process.env.JWT_EXPIRED;
+const jwtIssuer = process.env.JWT_ISSUER;
+const jwtAudience = process.env.JWT_CLIENT;
+
 
 // Helper untuk validasi input
 const validateBody = (body: any, requiredFields: string[]) => {
