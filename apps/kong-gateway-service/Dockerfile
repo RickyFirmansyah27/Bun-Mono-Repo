@@ -16,6 +16,7 @@ USER kong
 
 ENV term xterm
 
+#workdir
 WORKDIR /usr/local/kong/js-plugins
 COPY ./plugins .
 
