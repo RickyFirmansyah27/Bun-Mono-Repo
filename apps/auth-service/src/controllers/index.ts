@@ -112,7 +112,7 @@ const Login = async (
           issuer: jwtIssuer,
           audience: jwtAudience,
         });
-        // res.end(JSON.stringify({ user: user[0], token }));
+
         const result = {
           user: user[0],
           token,
