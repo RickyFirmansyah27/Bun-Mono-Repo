@@ -21,8 +21,6 @@ services:
       - name: public-route
         paths:
           - /api
-        plugins:
-          - name: auth
           
   - name: auth-service
     url: http://auth-service.default.svc.cluster.local:8100 # untuk kubernetes

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: kong-controller-bun
-          image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250104104200
+          image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250104130350
           ports:
             - containerPort: 8000
           env:
@@ -48,7 +48,7 @@ spec:
               value: "bun-client"
             # Allow plugins to be used. The plugin name is your JS file name e.g. hello.js
             - name: KONG_PLUGINS
-              value: bundled,auth
+              value: bundled,auth,cors  # Menggunakan plugin yang sama seperti di Docker Compose
             - name: KONG_RESPONSE_TRANSFORMER_REMOVE_HEADERS
               value: "false"
           volumeMounts:
