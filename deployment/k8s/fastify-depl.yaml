@@ -19,7 +19,7 @@ spec:
             - name: JWT_SECRET
               value: qwqonddqwiqwh1821j31igbwiduxhn8112ex1h299qhwehq98u
             - name: PORT
-              value: "8004"
+              value: '8004'
             - name: DATABASE_URL
               value: postgresql://myapp_owner:MQuO3eoA6Lik@ep-steep-wave-a12ap90f-pooler.ap-southeast-1.aws.neon.tech/myapp?sslmode=require
             - name: LOGTAIL_API_KEY
