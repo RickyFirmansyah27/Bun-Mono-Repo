@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   auth-service:
-    image: ghcr.io/rickyfirmansyah27/auth-service:latest
+    image: ghcr.io/rickyfirmansyah27/auth-service:20250104063447
     platform: linux/amd64
     build:
       context: .
@@ -42,7 +42,7 @@ services:
       start_period: 40s
 
   koa-service:
-    image: ghcr.io/rickyfirmansyah27/koa-service:latest
+    image: ghcr.io/rickyfirmansyah27/koa-service:20241127121459
     platform: linux/amd64
     build:
       context: .
@@ -82,7 +82,7 @@ services:
       start_period: 40s
 
   fastify-service:
-    image: ghcr.io/rickyfirmansyah27/fastify-service:latest
+    image: ghcr.io/rickyfirmansyah27/fastify-service:20250104031633
     platform: linux/amd64
     build:
       context: .
@@ -117,7 +117,7 @@ services:
       start_period: 40s
 
   elysia-service:
-    image: ghcr.io/rickyfirmansyah27/elysia-service:latest
+    image: ghcr.io/rickyfirmansyah27/elysia-service:20250103100250
     platform: linux/amd64
     build:
       context: .
@@ -152,7 +152,7 @@ services:
       start_period: 40s
   
   hono-service:
-    image: ghcr.io/rickyfirmansyah27/hono-service:latest
+    image: ghcr.io/rickyfirmansyah27/hono-service:20250104033247
     platform: linux/amd64
     build:
       context: .
@@ -187,7 +187,7 @@ services:
       start_period: 40s
 
   express-service:
-    image: ghcr.io/rickyfirmansyah27/express-service:latest
+    image: ghcr.io/rickyfirmansyah27/express-service:20250104031627
     platform: linux/amd64
     build:
       context: .
@@ -293,7 +293,7 @@ services:
       - redis_data:/data
 
   kong:
-    image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250105042858
+    image: ghcr.io/rickyfirmansyah27/kong-gateway-service:20250105062302
     build:
       context: apps/kong-gateway-service
       dockerfile: Dockerfile
